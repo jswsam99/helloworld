@@ -59,8 +59,64 @@
     /* ══════════════════════════
        HERO — Forest Canopy
     ══════════════════════════ */
-    #hero { position:relative; height:100vh; min-height:680px; overflow:hidden; display:flex; align-items:center; }
-    #forest-canvas { position:absolute; inset:0; width:100%; height:100%; }
+    #hero { position:relative; height:100vh; min-height:680px; overflow:hidden; display:flex; align-items:center; background:#060e07; }
+
+    /* ── Forest background ── */
+    #forest-bg { position:absolute; inset:0; background:radial-gradient(ellipse 70% 60% at 50% 20%, #1a3520 0%, #0d1f10 45%, #060e07 100%); }
+    .sky-glow { position:absolute; top:0; left:50%; transform:translateX(-50%); width:60%; height:45%; background:radial-gradient(ellipse at 50% 0%, rgba(60,120,40,.18) 0%, transparent 70%); }
+    #forest-svg { position:absolute; inset:0; width:100%; height:100%; }
+
+    /* Tree sway animations - each tree sways differently */
+    @keyframes sway1 { 0%,100%{transform:rotate(-2.5deg) translateX(-1%)} 50%{transform:rotate(2.5deg) translateX(1%)} }
+    @keyframes sway2 { 0%,100%{transform:rotate(2deg) translateX(1%)} 50%{transform:rotate(-3deg) translateX(-1%)} }
+    @keyframes sway3 { 0%,100%{transform:rotate(-1.8deg)} 33%{transform:rotate(2.8deg)} 66%{transform:rotate(-1deg)} }
+    @keyframes sway4 { 0%,100%{transform:rotate(2.2deg) translateX(0.5%)} 50%{transform:rotate(-2.2deg) translateX(-0.5%)} }
+    @keyframes sway5 { 0%,100%{transform:rotate(-3deg) translateX(-1%)} 50%{transform:rotate(1.8deg) translateX(0.8%)} }
+    @keyframes sway6 { 0%,100%{transform:rotate(1.5deg)} 50%{transform:rotate(-2.5deg)} }
+
+    /* Branch micro-sway */
+    @keyframes bsway1 { 0%,100%{transform:rotate(-4deg)} 50%{transform:rotate(4deg)} }
+    @keyframes bsway2 { 0%,100%{transform:rotate(3deg)} 50%{transform:rotate(-5deg)} }
+    @keyframes bsway3 { 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(3deg)} }
+    @keyframes bsway4 { 0%,100%{transform:rotate(5deg)} 50%{transform:rotate(-3deg)} }
+
+    /* Leaf flutter */
+    @keyframes lflut1 { 0%,100%{transform:scale(1) rotate(-3deg)} 50%{transform:scale(1.04) rotate(3deg)} }
+    @keyframes lflut2 { 0%,100%{transform:scale(1.03) rotate(4deg)} 50%{transform:scale(0.97) rotate(-4deg)} }
+    @keyframes lflut3 { 0%,100%{transform:scale(0.98) rotate(-2deg)} 33%{transform:scale(1.04) rotate(3deg)} 66%{transform:scale(1) rotate(-5deg)} }
+
+    /* Ray pulse */
+    @keyframes raypulse { 0%,100%{opacity:.7} 50%{opacity:1.3} }
+
+    /* Spore float */
+    @keyframes spfloat1 { 0%{transform:translateY(0) translateX(0)} 33%{transform:translateY(-18px) translateX(6px)} 66%{transform:translateY(-8px) translateX(-4px)} 100%{transform:translateY(-28px) translateX(2px); opacity:0} }
+    @keyframes spfloat2 { 0%{transform:translateY(0) translateX(0)} 50%{transform:translateY(-22px) translateX(-8px)} 100%{transform:translateY(-36px) translateX(4px); opacity:0} }
+    @keyframes spfloat3 { 0%{transform:translateY(0)} 100%{transform:translateY(-32px) translateX(6px); opacity:0} }
+
+    .tree { transform-origin: bottom center; }
+    .t1 { animation: sway1 5.2s ease-in-out infinite; transform-origin: 8% 110%; }
+    .t2 { animation: sway2 6.8s ease-in-out infinite; transform-origin: 24% 110%; }
+    .t3 { animation: sway3 7.5s ease-in-out infinite; transform-origin: 44% 110%; }
+    .t4 { animation: sway4 5.9s ease-in-out infinite; transform-origin: 64% 110%; }
+    .t5 { animation: sway5 6.3s ease-in-out infinite; transform-origin: 82% 110%; }
+    .t6 { animation: sway6 4.8s ease-in-out infinite; transform-origin: 97% 110%; }
+
+    .b1 { animation: bsway1 3.8s ease-in-out infinite; transform-box:fill-box; transform-origin:0% 100%; }
+    .b2 { animation: bsway2 4.2s ease-in-out infinite; transform-box:fill-box; transform-origin:0% 100%; }
+    .b3 { animation: bsway3 3.1s ease-in-out infinite; transform-box:fill-box; transform-origin:0% 100%; }
+    .b4 { animation: bsway4 2.9s ease-in-out infinite; transform-box:fill-box; transform-origin:0% 100%; }
+
+    .l1 { animation: lflut1 3.4s ease-in-out infinite; transform-box:fill-box; transform-origin:center; }
+    .l2 { animation: lflut2 4.1s ease-in-out infinite; transform-box:fill-box; transform-origin:center; }
+    .l3 { animation: lflut3 2.8s ease-in-out infinite; transform-box:fill-box; transform-origin:center; }
+
+    .r1 { animation: raypulse 6s ease-in-out infinite; }
+    .r2 { animation: raypulse 8s ease-in-out infinite 1s; }
+    .r3 { animation: raypulse 7s ease-in-out infinite 2s; }
+
+    .s1 { animation: spfloat1 6s ease-in-out infinite; }
+    .s2 { animation: spfloat2 8s ease-in-out infinite 1.5s; }
+    .s3 { animation: spfloat3 7s ease-in-out infinite 3s; }
 
     /* layered overlays for depth */
     .h-ov1 { position:absolute; inset:0; background:radial-gradient(ellipse 70% 80% at 50% 0%, rgba(0,0,0,.0) 0%, rgba(13,31,15,.55) 100%); }
@@ -232,7 +288,123 @@
 
 <!-- HERO -->
 <section id="hero">
-  <canvas id="forest-canvas"></canvas>
+  <!-- CSS Forest Canopy -->
+  <div id="forest-bg">
+    <div class="sky-glow"></div>
+    <!-- SVG Trees -->
+    <svg id="forest-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+      <!-- Tree 1 - far left -->
+      <g class="tree t1">
+        <line x1="8%" y1="110%" x2="10%" y2="62%" stroke="#1a3018" stroke-width="14"/>
+        <line x1="10%" y1="62%" x2="6%" y2="30%" stroke="#1a3018" stroke-width="9" class="b1"/>
+        <line x1="10%" y1="62%" x2="15%" y2="35%" stroke="#162b14" stroke-width="8" class="b2"/>
+        <line x1="6%" y1="30%" x2="3%" y2="10%" stroke="#142910" stroke-width="5" class="b3"/>
+        <line x1="6%" y1="30%" x2="9%" y2="12%" stroke="#142910" stroke-width="5" class="b4"/>
+        <line x1="15%" y1="35%" x2="12%" y2="14%" stroke="#142910" stroke-width="5" class="b3"/>
+        <line x1="15%" y1="35%" x2="19%" y2="16%" stroke="#142910" stroke-width="4" class="b4"/>
+        <ellipse cx="4%" cy="8%" rx="7%" ry="10%" fill="#1e4a1a" class="leaf l1"/>
+        <ellipse cx="10%" cy="6%" rx="6%" ry="9%" fill="#245e22" class="leaf l2"/>
+        <ellipse cx="13%" cy="10%" rx="5%" ry="8%" fill="#1a4018" class="leaf l3"/>
+        <ellipse cx="20%" cy="12%" rx="6%" ry="9%" fill="#1e4a1a" class="leaf l1"/>
+        <ellipse cx="7%" cy="18%" rx="5%" ry="7%" fill="#2d7028" class="leaf l2"/>
+        <ellipse cx="16%" cy="20%" rx="4%" ry="6%" fill="#245e22" class="leaf l3"/>
+      </g>
+      <!-- Tree 2 - left center -->
+      <g class="tree t2">
+        <line x1="24%" y1="110%" x2="25%" y2="55%" stroke="#1a3018" stroke-width="16"/>
+        <line x1="25%" y1="55%" x2="19%" y2="22%" stroke="#162b14" stroke-width="10" class="b2"/>
+        <line x1="25%" y1="55%" x2="31%" y2="28%" stroke="#1a3018" stroke-width="10" class="b1"/>
+        <line x1="19%" y1="22%" x2="15%" y2="4%" stroke="#142910" stroke-width="6" class="b4"/>
+        <line x1="19%" y1="22%" x2="22%" y2="2%" stroke="#142910" stroke-width="5" class="b3"/>
+        <line x1="31%" y1="28%" x2="27%" y2="6%" stroke="#142910" stroke-width="6" class="b3"/>
+        <line x1="31%" y1="28%" x2="35%" y2="8%" stroke="#142910" stroke-width="5" class="b4"/>
+        <ellipse cx="14%" cy="2%" rx="8%" ry="11%" fill="#245e22" class="leaf l2"/>
+        <ellipse cx="22%" cy="0%" rx="7%" ry="10%" fill="#1e4a1a" class="leaf l1"/>
+        <ellipse cx="28%" cy="3%" rx="8%" ry="11%" fill="#2d7028" class="leaf l3"/>
+        <ellipse cx="36%" cy="5%" rx="6%" ry="9%" fill="#245e22" class="leaf l2"/>
+        <ellipse cx="18%" cy="14%" rx="5%" ry="7%" fill="#1a4018" class="leaf l1"/>
+        <ellipse cx="32%" cy="16%" rx="5%" ry="7%" fill="#1e4a1a" class="leaf l3"/>
+      </g>
+      <!-- Tree 3 - center left -->
+      <g class="tree t3">
+        <line x1="44%" y1="110%" x2="43%" y2="50%" stroke="#162b14" stroke-width="18"/>
+        <line x1="43%" y1="50%" x2="36%" y2="18%" stroke="#1a3018" stroke-width="11" class="b1"/>
+        <line x1="43%" y1="50%" x2="50%" y2="20%" stroke="#162b14" stroke-width="11" class="b2"/>
+        <line x1="36%" y1="18%" x2="31%" y2="0%" stroke="#142910" stroke-width="7" class="b3"/>
+        <line x1="36%" y1="18%" x2="38%" y2="-2%" stroke="#142910" stroke-width="6" class="b4"/>
+        <line x1="50%" y1="20%" x2="46%" y2="0%" stroke="#142910" stroke-width="7" class="b4"/>
+        <line x1="50%" y1="20%" x2="55%" y2="2%" stroke="#142910" stroke-width="6" class="b3"/>
+        <ellipse cx="30%" cy="-2%" rx="9%" ry="13%" fill="#1e4a1a" class="leaf l3"/>
+        <ellipse cx="39%" cy="-4%" rx="9%" ry="13%" fill="#2d7028" class="leaf l1"/>
+        <ellipse cx="48%" cy="-2%" rx="9%" ry="12%" fill="#1a4018" class="leaf l2"/>
+        <ellipse cx="57%" cy="0%" rx="7%" ry="10%" fill="#245e22" class="leaf l3"/>
+        <ellipse cx="34%" cy="10%" rx="6%" ry="8%" fill="#2d7028" class="leaf l1"/>
+        <ellipse cx="52%" cy="12%" rx="5%" ry="7%" fill="#1e4a1a" class="leaf l2"/>
+      </g>
+      <!-- Tree 4 - center right -->
+      <g class="tree t4">
+        <line x1="64%" y1="110%" x2="65%" y2="52%" stroke="#1a3018" stroke-width="15"/>
+        <line x1="65%" y1="52%" x2="59%" y2="20%" stroke="#162b14" stroke-width="9" class="b2"/>
+        <line x1="65%" y1="52%" x2="71%" y2="24%" stroke="#1a3018" stroke-width="9" class="b1"/>
+        <line x1="59%" y1="20%" x2="55%" y2="2%" stroke="#142910" stroke-width="6" class="b4"/>
+        <line x1="59%" y1="20%" x2="62%" y2="0%" stroke="#142910" stroke-width="5" class="b3"/>
+        <line x1="71%" y1="24%" x2="68%" y2="4%" stroke="#142910" stroke-width="5" class="b3"/>
+        <line x1="71%" y1="24%" x2="75%" y2="6%" stroke="#142910" stroke-width="5" class="b4"/>
+        <ellipse cx="54%" cy="0%" rx="8%" ry="11%" fill="#245e22" class="leaf l1"/>
+        <ellipse cx="62%" cy="-2%" rx="8%" ry="12%" fill="#1e4a1a" class="leaf l2"/>
+        <ellipse cx="70%" cy="1%" rx="7%" ry="10%" fill="#2d7028" class="leaf l3"/>
+        <ellipse cx="76%" cy="4%" rx="6%" ry="9%" fill="#245e22" class="leaf l1"/>
+        <ellipse cx="57%" cy="12%" rx="5%" ry="7%" fill="#1a4018" class="leaf l2"/>
+        <ellipse cx="72%" cy="14%" rx="5%" ry="8%" fill="#1e4a1a" class="leaf l3"/>
+      </g>
+      <!-- Tree 5 - right -->
+      <g class="tree t5">
+        <line x1="82%" y1="110%" x2="83%" y2="58%" stroke="#1a3018" stroke-width="14"/>
+        <line x1="83%" y1="58%" x2="78%" y2="26%" stroke="#162b14" stroke-width="9" class="b1"/>
+        <line x1="83%" y1="58%" x2="88%" y2="30%" stroke="#1a3018" stroke-width="8" class="b2"/>
+        <line x1="78%" y1="26%" x2="74%" y2="6%" stroke="#142910" stroke-width="5" class="b3"/>
+        <line x1="78%" y1="26%" x2="80%" y2="8%" stroke="#142910" stroke-width="5" class="b4"/>
+        <line x1="88%" y1="30%" x2="85%" y2="10%" stroke="#142910" stroke-width="5" class="b4"/>
+        <line x1="88%" y1="30%" x2="92%" y2="12%" stroke="#142910" stroke-width="4" class="b3"/>
+        <ellipse cx="73%" cy="4%" rx="7%" ry="10%" fill="#1e4a1a" class="leaf l2"/>
+        <ellipse cx="80%" cy="2%" rx="7%" ry="10%" fill="#245e22" class="leaf l1"/>
+        <ellipse cx="87%" cy="6%" rx="6%" ry="9%" fill="#1a4018" class="leaf l3"/>
+        <ellipse cx="93%" cy="9%" rx="5%" ry="8%" fill="#2d7028" class="leaf l2"/>
+        <ellipse cx="76%" cy="17%" rx="5%" ry="7%" fill="#245e22" class="leaf l1"/>
+        <ellipse cx="90%" cy="19%" rx="4%" ry="6%" fill="#1e4a1a" class="leaf l3"/>
+      </g>
+      <!-- Tree 6 - far right -->
+      <g class="tree t6">
+        <line x1="97%" y1="110%" x2="96%" y2="60%" stroke="#1a3018" stroke-width="12"/>
+        <line x1="96%" y1="60%" x2="91%" y2="32%" stroke="#162b14" stroke-width="8" class="b2"/>
+        <line x1="96%" y1="60%" x2="100%" y2="36%" stroke="#1a3018" stroke-width="7" class="b1"/>
+        <line x1="91%" y1="32%" x2="87%" y2="12%" stroke="#142910" stroke-width="5" class="b4"/>
+        <line x1="91%" y1="32%" x2="93%" y2="14%" stroke="#142910" stroke-width="4" class="b3"/>
+        <ellipse cx="86%" cy="10%" rx="7%" ry="10%" fill="#245e22" class="leaf l3"/>
+        <ellipse cx="93%" cy="8%" rx="7%" ry="11%" fill="#1e4a1a" class="leaf l1"/>
+        <ellipse cx="100%" cy="14%" rx="5%" ry="8%" fill="#2d7028" class="leaf l2"/>
+        <ellipse cx="89%" cy="22%" rx="4%" ry="6%" fill="#1a4018" class="leaf l3"/>
+      </g>
+      <!-- God rays -->
+      <g class="rays" style="mix-blend-mode:screen">
+        <polygon points="18%,0 22%,0 40%,100% 10%,100%" fill="rgba(255,240,160,0.04)" class="ray r1"/>
+        <polygon points="35%,0 38%,0 55%,100% 28%,100%" fill="rgba(255,240,160,0.03)" class="ray r2"/>
+        <polygon points="52%,0 55%,0 70%,100% 45%,100%" fill="rgba(255,240,160,0.04)" class="ray r3"/>
+        <polygon points="70%,0 73%,0 88%,100% 62%,100%" fill="rgba(255,240,160,0.03)" class="ray r1"/>
+      </g>
+      <!-- Floating spores -->
+      <g class="spores">
+        <circle cx="15%" cy="40%" r="1.5" fill="rgba(200,255,180,0.5)" class="sp s1"/>
+        <circle cx="30%" cy="60%" r="1" fill="rgba(200,255,180,0.4)" class="sp s2"/>
+        <circle cx="48%" cy="35%" r="2" fill="rgba(200,255,180,0.35)" class="sp s3"/>
+        <circle cx="63%" cy="55%" r="1.2" fill="rgba(200,255,180,0.45)" class="sp s1"/>
+        <circle cx="75%" cy="42%" r="1.8" fill="rgba(200,255,180,0.4)" class="sp s2"/>
+        <circle cx="88%" cy="65%" r="1" fill="rgba(200,255,180,0.35)" class="sp s3"/>
+        <circle cx="22%" cy="72%" r="1.3" fill="rgba(200,255,180,0.3)" class="sp s2"/>
+        <circle cx="55%" cy="78%" r="1.5" fill="rgba(200,255,180,0.35)" class="sp s1"/>
+      </g>
+    </svg>
+  </div>
   <div class="h-ov1"></div>
   <div class="h-ov2"></div>
 
@@ -424,7 +596,7 @@
 <footer><div class="fi"><div class="fc">© 2024 Jeong Sangwoo · 정상우. All rights reserved.</div><div class="fr">Seoul · 우미글로벌 · 건국대학교 부동산학과</div></div></footer>
 
 <!-- ══════════════════════════════════════
-     FOREST CANOPY CANVAS ENGINE
+     SCRIPTS
 ══════════════════════════════════════ -->
 <script>
 /* ── Cursor ── */
@@ -433,242 +605,11 @@ let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
 (function ac(){cur.style.left=mx+'px';cur.style.top=my+'px';rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ac);})();
 
-/* ══════════════════════════
-   FOREST CANOPY
-══════════════════════════ */
-const canvas=document.getElementById('forest-canvas');
-const ctx=canvas.getContext('2d');
-let W,H,t=0;
-
-/* --- Branch / Tree system --- */
-const PALETTE={
-  bg:['#060e07','#091209','#0a1a0b'],        // sky behind canopy
-  trunk:['#1a2e14','#152511','#0f1c0d'],
-  leaf:['#1a4020','#1f5226','#245e2a','#2d7034','#347a3a','#3d8e42','#4a9e4e'],
-  leafLight:['#4aaa45','#5fbb55','#72c966','#86d478','#9dde8e'],
-  sunray:'rgba(255,235,180,',
-};
-
-/* God-ray beams */
-const RAYS=[];
-function initRays(){
-  RAYS.length=0;
-  const count=10+Math.floor(W/120);
-  for(let i=0;i<count;i++){
-    RAYS.push({
-      x: 0.1*W + Math.random()*0.8*W,
-      angle: -Math.PI/2 + (Math.random()-.5)*0.45,
-      width: 18+Math.random()*60,
-      alpha: 0.03+Math.random()*0.07,
-      speed: 0.0003+Math.random()*0.0004,
-      phase: Math.random()*Math.PI*2,
-      length: H*0.6+Math.random()*H*0.4,
-    });
-  }
-}
-
-function drawRays(time){
-  RAYS.forEach(r=>{
-    const sway=Math.sin(time*r.speed+r.phase)*0.04;
-    const angle=r.angle+sway;
-    const ex=r.x+Math.cos(angle)*r.length;
-    const ey=r.y+Math.sin(angle)*r.length;  // r.y will be set to 0
-
-    const grad=ctx.createLinearGradient(r.x,0,ex,ey);
-    const a=r.alpha*(0.7+0.3*Math.sin(time*0.0007+r.phase));
-    grad.addColorStop(0, r.sunray+a+')');
-    grad.addColorStop(0.4, r.sunray+(a*0.5)+')');
-    grad.addColorStop(1, r.sunray+'0)');
-
-    ctx.save();
-    ctx.beginPath();
-    // trapezoid beam
-    const hw=r.width/2;
-    const ex2=r.x+Math.cos(angle+Math.PI/2)*hw;
-    const ey2=Math.sin(angle+Math.PI/2)*hw;
-    const ex3=r.x-Math.cos(angle+Math.PI/2)*hw;
-    const ey3=-Math.sin(angle+Math.PI/2)*hw;
-    const spread=r.length*Math.tan(0.06);
-    const bx1=ex+Math.cos(angle+Math.PI/2)*(hw+spread);
-    const by1=ey+Math.sin(angle+Math.PI/2)*(hw+spread);
-    const bx2=ex-Math.cos(angle+Math.PI/2)*(hw+spread);
-    const by2=ey-Math.sin(angle+Math.PI/2)*(hw+spread);
-    ctx.moveTo(r.x+Math.cos(angle+Math.PI/2)*hw, Math.sin(angle+Math.PI/2)*hw);
-    ctx.lineTo(r.x-Math.cos(angle+Math.PI/2)*hw, -Math.sin(angle+Math.PI/2)*hw);
-    ctx.lineTo(bx2,by2);
-    ctx.lineTo(bx1,by1);
-    ctx.closePath();
-    ctx.fillStyle=grad;
-    ctx.globalCompositeOperation='screen';
-    ctx.fill();
-    ctx.globalCompositeOperation='source-over';
-    ctx.restore();
-  });
-}
-
-/* --- Leaf cluster --- */
-function drawLeaf(x,y,size,angle,colorIdx,alpha,sway){
-  ctx.save();
-  ctx.translate(x,y);
-  ctx.rotate(angle+sway);
-  ctx.globalAlpha=alpha;
-  ctx.beginPath();
-  // elliptical leaf
-  ctx.ellipse(0,0,size*0.5,size,0,0,Math.PI*2);
-  ctx.fillStyle=PALETTE.leaf[colorIdx%PALETTE.leaf.length];
-  ctx.fill();
-  // vein
-  ctx.beginPath();
-  ctx.moveTo(0,-size);ctx.lineTo(0,size);
-  ctx.strokeStyle='rgba(0,0,0,.15)';ctx.lineWidth=.5;ctx.stroke();
-  ctx.restore();
-}
-
-/* Recursive branch */
-function drawBranch(x,y,len,angle,depth,time){
-  if(depth===0||len<4) return;
-  const sway=Math.sin(time*0.0008+depth*0.7+x*0.003)*0.06*(4-Math.min(depth,3));
-  const ex=x+Math.cos(angle+sway)*len;
-  const ey=y+Math.sin(angle+sway)*len;
-
-  ctx.beginPath();
-  ctx.moveTo(x,y);
-  ctx.lineTo(ex,ey);
-  ctx.strokeStyle=PALETTE.trunk[Math.min(depth,2)];
-  ctx.lineWidth=Math.max(1,depth*1.8);
-  ctx.lineCap='round';
-  ctx.stroke();
-
-  // leaf clusters at tips
-  if(depth<=2){
-    const leafCount=5+Math.floor(Math.random()*6);
-    const ci=Math.floor(Math.random()*PALETTE.leaf.length);
-    for(let i=0;i<leafCount;i++){
-      const lx=ex+(Math.random()-.5)*len*1.4;
-      const ly=ey+(Math.random()-.5)*len*1.4;
-      const ls=8+Math.random()*20;
-      const la=Math.PI*2*Math.random();
-      const ls2=Math.sin(time*0.0006+lx*0.01+i)*0.08;
-      const alpha=0.55+Math.random()*0.35;
-      drawLeaf(lx,ly,ls,la,ci+i,alpha,ls2);
-    }
-    // bright highlight leaves
-    if(Math.random()<0.3){
-      const ci2=Math.floor(Math.random()*PALETTE.leafLight.length);
-      const lx=ex+(Math.random()-.5)*len;
-      const ly=ey+(Math.random()-.5)*len;
-      ctx.save();ctx.translate(lx,ly);ctx.rotate(Math.random()*Math.PI*2);
-      ctx.globalAlpha=0.3+Math.random()*0.4;
-      ctx.beginPath();ctx.ellipse(0,0,5+Math.random()*10,10+Math.random()*18,0,0,Math.PI*2);
-      ctx.fillStyle=PALETTE.leafLight[ci2];ctx.fill();ctx.restore();
-    }
-  }
-
-  // split
-  const spread=0.3+depth*0.08;
-  drawBranch(ex,ey,len*(0.62+Math.random()*0.1),angle-spread+(Math.random()*.15),depth-1,time);
-  drawBranch(ex,ey,len*(0.62+Math.random()*0.1),angle+spread-(Math.random()*.15),depth-1,time);
-  if(depth>=3&&Math.random()<0.5)
-    drawBranch(ex,ey,len*(0.5+Math.random()*.1),angle+(Math.random()-.5)*0.6,depth-2,time);
-}
-
-/* Tree roots/sources around edges & bottom */
-let trees=[];
-function initTrees(){
-  trees=[];
-  // bottom left
-  const count=Math.floor(4+W/260);
-  const positions=[];
-  for(let i=0;i<count;i++) positions.push({x:(i/(count-1))*W*1.1-W*0.05, side:'bottom'});
-  // side crawlers
-  positions.push({x:-20,side:'left'});
-  positions.push({x:W+20,side:'right'});
-  positions.forEach((p,i)=>{
-    let sx,sy,angle;
-    if(p.side==='bottom'){sx=p.x;sy=H+10;angle=-Math.PI/2+(Math.random()-.5)*0.3;}
-    else if(p.side==='left'){sx=0;sy=H*(0.2+Math.random()*0.6);angle=-0.3+(Math.random()-.5)*0.4;}
-    else{sx=W;sy=H*(0.2+Math.random()*0.6);angle=Math.PI+0.3+(Math.random()-.5)*0.4;}
-    trees.push({sx,sy,angle,len:H*(0.38+Math.random()*0.28),phase:Math.random()*100});
-  });
-}
-
-/* Floating dust/spore particles */
-const SPORES=[];
-function initSpores(){
-  SPORES.length=0;
-  const n=Math.floor(W*H/4000);
-  for(let i=0;i<n;i++) SPORES.push({
-    x:Math.random()*W, y:Math.random()*H,
-    r:.5+Math.random()*1.5,
-    vy:-.08-.1*Math.random(), vx:(Math.random()-.5)*.1,
-    alpha:.1+Math.random()*.4,
-    phase:Math.random()*Math.PI*2
-  });
-}
-function drawSpores(time){
-  SPORES.forEach(s=>{
-    const a=s.alpha*(0.5+0.5*Math.sin(time*.002+s.phase));
-    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fillStyle=`rgba(220,255,200,${a})`;ctx.fill();
-    s.y+=s.vy;s.x+=s.vx+Math.sin(time*.001+s.phase)*.2;
-    if(s.y<-5){s.y=H+5;s.x=Math.random()*W;}
-    if(s.x<0)s.x=W;if(s.x>W)s.x=0;
-  });
-}
-
-function resize(){
-  W=canvas.width=canvas.offsetWidth;
-  H=canvas.height=canvas.offsetHeight;
-  initRays(); initTrees(); initSpores();
-}
-
-let seed=0;
-function seededRand(n){seed=(seed*1664525+1013904223)&0xffffffff;return((seed>>>0)/0xffffffff)*n;}
-
-function drawFrame(time){
-  t=time;
-  ctx.clearRect(0,0,W,H);
-
-  // Sky / dark canopy bg
-  const skyGrad=ctx.createRadialGradient(W/2,H*0.15,0,W/2,H*0.15,H*.9);
-  skyGrad.addColorStop(0,'#1a3520');
-  skyGrad.addColorStop(0.4,'#0d1f10');
-  skyGrad.addColorStop(1,'#060e07');
-  ctx.fillStyle=skyGrad;ctx.fillRect(0,0,W,H);
-
-  // God rays (behind trees)
-  drawRays(time);
-
-  // Trees — use seeded randomness per tree so they don't re-randomize every frame
-  trees.forEach((tr,i)=>{
-    seed=i*997+1;
-    ctx.save();
-    drawBranch(tr.sx,tr.sy,tr.len,tr.angle,6,time+tr.phase*1000);
-    ctx.restore();
-  });
-
-  // Ambient green atmospheric haze
-  const hazeGrad=ctx.createRadialGradient(W/2,H*0.3,H*.1,W/2,H*0.3,H*.9);
-  hazeGrad.addColorStop(0,'rgba(30,80,20,.0)');
-  hazeGrad.addColorStop(1,'rgba(5,15,5,.35)');
-  ctx.fillStyle=hazeGrad;ctx.fillRect(0,0,W,H);
-
-  // Floating spores / dust
-  drawSpores(time);
-
-  requestAnimationFrame(drawFrame);
-}
-
-window.addEventListener('resize',()=>{resize();},{ passive:true });
-resize();
-requestAnimationFrame(drawFrame);
-
 /* ── Nav state ── */
 const nav=document.getElementById('nav'),heroSec=document.getElementById('hero');
 function updateNav(){
-  const hb=heroSec.getBoundingClientRect().bottom;
   nav.classList.toggle('scrolled',window.scrollY>60);
-  if(hb>56){nav.classList.add('light');}else{nav.classList.remove('light');}
+  if(heroSec.getBoundingClientRect().bottom>56){nav.classList.add('light');}else{nav.classList.remove('light');}
 }
 window.addEventListener('scroll',updateNav,{passive:true});updateNav();
 
@@ -680,7 +621,7 @@ function animCount(el,target){
   const s=performance.now();const d=1400;
   (function step(now){
     const p=Math.min((now-s)/d,1),e=1-Math.pow(1-p,3);
-    el.textContent=Math.round(e*target)+(target===3?'+':'');
+    el.textContent=Math.round(e*target)+'+';
     if(p<1)requestAnimationFrame(step);
   })(s);
 }
