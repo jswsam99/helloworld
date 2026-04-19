@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jeong Sangwoo — 부동산 투자운용</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Serif+KR:wght@200;300;400;500&family=Noto+Sans+KR:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream:     #f2f0eb;
+      --cream2:    #e8e4dc;
+      --parchment: #f7f5f0;
+      --forest:    #0d1f0f;
+      --forest2:   #142616;
+      --forest3:   #1a3019;
+      --green-dk:  #1e3d1c;
+      --green-mid: #2d5c28;
+      --green-lt:  #4a8c3f;
+      --green-pale:#8fbc7a;
+      --sage:      #b5c9a8;
+      --rule:      #c4bfb4;
+      --rule-l:    rgba(196,191,180,0.28);
+      --ink:       #252118;
+      --ink-mid:   #574f43;
+      --ink-lt:    #857d72;
+      --serif:     'EB Garamond','Noto Serif KR',serif;
+      --sans:      'Noto Sans KR',sans-serif;
+      --body:      'Noto Serif KR',serif;
+    }
+
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; font-size:16px; }
+    body { background:var(--parchment); color:var(--ink); font-family:var(--body); font-weight:300; overflow-x:hidden; }
+
+    /* ── Custom cursor ── */
+    #cur { position:fixed; width:8px; height:8px; background:var(--green-lt); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); mix-blend-mode:normal; transition:background .3s,width .2s,height .2s; }
+    #cur-ring { position:fixed; width:38px; height:38px; border:1px solid rgba(143,188,122,.5); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width .35s cubic-bezier(.16,1,.3,1),height .35s cubic-bezier(.16,1,.3,1); }
+
+    /* ── NAV ── */
+    nav { position:fixed; top:0; left:0; right:0; z-index:200; transition:background .5s,border-color .5s; }
+    .nav-bar { height:3px; background:var(--green-mid); }
+    nav.light .nav-bar { background:rgba(77,140,63,.0); }
+    nav.light { background:transparent; }
+    nav.light .logo { color:rgba(242,240,235,.9); }
+    nav.light .nl a { color:rgba(242,240,235,.5); }
+    nav.light .nl a:hover { color:rgba(242,240,235,.9); }
+    nav.scrolled { background:rgba(247,245,240,.96); border-bottom:1px solid var(--rule-l); backdrop-filter:blur(12px); }
+    nav.scrolled.light { background:rgba(13,31,15,.9); border-color:rgba(143,188,122,.12); }
+    nav.scrolled.light .logo { color:rgba(242,240,235,.9); }
+    nav.scrolled.light .nl a { color:rgba(242,240,235,.5); }
+    .nav-inner { max-width:1200px; margin:0 auto; padding:0 52px; display:flex; align-items:center; justify-content:space-between; height:54px; }
+    .logo { font-family:var(--serif); font-size:1rem; font-weight:500; color:var(--forest); text-decoration:none; letter-spacing:.06em; transition:color .3s; }
+    .nl { display:flex; gap:36px; list-style:none; }
+    .nl a { font-family:var(--sans); font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-mid); text-decoration:none; transition:color .2s; }
+    .nl a:hover { color:var(--forest); }
+
+    /* ══════════════════════════
+       HERO — Forest Canopy
+    ══════════════════════════ */
+    #hero { position:relative; height:100vh; min-height:680px; overflow:hidden; display:flex; align-items:center; }
+    #forest-canvas { position:absolute; inset:0; width:100%; height:100%; }
+
+    /* layered overlays for depth */
+    .h-ov1 { position:absolute; inset:0; background:radial-gradient(ellipse 70% 80% at 50% 0%, rgba(0,0,0,.0) 0%, rgba(13,31,15,.55) 100%); }
+    .h-ov2 { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(13,31,15,.3) 0%, rgba(13,31,15,.72) 60%, rgba(13,31,15,.88) 100%); }
+
+    .hero-content { position:relative; z-index:2; max-width:1200px; margin:0 auto; padding:0 52px; width:100%; }
+
+    /* reveal animation */
+    .rv { overflow:hidden; display:block; }
+    .rl { display:block; transform:translateY(108%); opacity:0; transition:transform .95s cubic-bezier(.16,1,.3,1), opacity .5s ease; }
+    .rl.in { transform:translateY(0); opacity:1; }
+
+    .hero-kicker { font-family:var(--sans); font-size:.58rem; letter-spacing:.3em; text-transform:uppercase; color:rgba(181,201,168,.65); margin-bottom:30px; display:flex; align-items:center; gap:14px; }
+    .hero-kicker::before { content:''; width:26px; height:1px; background:rgba(143,188,122,.45); flex-shrink:0; }
+    .hero-h1 { font-family:var(--serif); font-size:clamp(3.8rem,8vw,7.2rem); font-weight:400; line-height:.93; color:var(--cream); letter-spacing:-.01em; margin-bottom:36px; }
+    .hero-h1 em { font-style:italic; color:rgba(143,188,122,.7); display:block; font-size:68%; margin-top:8px; }
+    .hero-sub { font-family:var(--body); font-size:1rem; color:rgba(242,240,235,.55); line-height:1.9; max-width:460px; margin-bottom:52px; font-weight:300; }
+
+    .hero-stats { display:flex; gap:52px; padding:30px 0; border-top:1px solid rgba(143,188,122,.15); margin-bottom:44px; }
+    .stat-num { font-family:var(--serif); font-size:2.3rem; color:var(--cream); line-height:1; display:block; }
+    .stat-lbl { font-family:var(--sans); font-size:.53rem; letter-spacing:.16em; text-transform:uppercase; color:rgba(181,201,168,.45); margin-top:8px; display:block; }
+
+    .hero-cta { display:flex; gap:14px; }
+    .btn-solid { display:inline-flex; align-items:center; gap:8px; background:var(--green-lt); color:#fff; font-family:var(--sans); font-size:.63rem; letter-spacing:.16em; text-transform:uppercase; padding:14px 30px; text-decoration:none; font-weight:400; transition:background .2s,transform .2s; }
+    .btn-solid:hover { background:var(--green-pale); transform:translateY(-2px); }
+    .btn-ghost { display:inline-flex; align-items:center; gap:8px; border:1px solid rgba(143,188,122,.3); color:rgba(242,240,235,.6); font-family:var(--sans); font-size:.63rem; letter-spacing:.16em; text-transform:uppercase; padding:14px 30px; text-decoration:none; transition:border-color .2s,color .2s,transform .2s; }
+    .btn-ghost:hover { border-color:rgba(143,188,122,.7); color:var(--cream); transform:translateY(-2px); }
+
+    /* scroll indicator */
+    .hero-scroll { position:absolute; bottom:48px; left:52px; z-index:2; display:flex; align-items:center; gap:10px; font-family:var(--sans); font-size:.53rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(181,201,168,.4); }
+    .scroll-track { width:1px; height:50px; background:rgba(143,188,122,.15); position:relative; overflow:hidden; }
+    .scroll-dot { position:absolute; top:-40%; left:0; width:100%; height:40%; background:rgba(143,188,122,.6); animation:sdrop 1.9s 1.5s ease-in-out infinite; }
+    @keyframes sdrop { 0%{top:-40%} 100%{top:140%} }
+
+    /* ticker */
+    .hero-ticker { position:absolute; bottom:0; left:0; right:0; z-index:2; background:rgba(13,31,15,.65); backdrop-filter:blur(6px); border-top:1px solid rgba(143,188,122,.1); overflow:hidden; height:38px; display:flex; align-items:center; }
+    .ticker-track { display:flex; animation:tick 26s linear infinite; white-space:nowrap; }
+    .ticker-item { font-family:var(--sans); font-size:.57rem; letter-spacing:.12em; color:rgba(181,201,168,.45); padding:0 40px; border-right:1px solid rgba(143,188,122,.1); display:flex; align-items:center; gap:10px; height:38px; }
+    .ticker-val { color:rgba(181,201,168,.8); font-weight:400; }
+    @keyframes tick { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+    /* ══ Sections ══ */
+    section { position:relative; z-index:1; }
+    .sw { max-width:1200px; margin:0 auto; padding:108px 52px; }
+    .sh { display:grid; grid-template-columns:180px 1fr; gap:0 60px; margin-bottom:72px; padding-bottom:36px; border-bottom:1px solid var(--rule-l); }
+    .sn { font-family:var(--serif); font-size:.8rem; color:var(--ink-lt); padding-top:6px; letter-spacing:.08em; }
+    .st { font-family:var(--serif); font-size:clamp(1.9rem,4.5vw,3.1rem); font-weight:400; line-height:1.1; color:var(--forest); }
+    .ss { font-family:var(--sans); font-size:.58rem; letter-spacing:.22em; text-transform:uppercase; color:var(--ink-lt); margin-top:14px; }
+
+    /* fade-up */
+    .fu { opacity:0; transform:translateY(28px); transition:opacity .8s ease,transform .8s cubic-bezier(.16,1,.3,1); }
+    .fu.in { opacity:1; transform:translateY(0); }
+    .fu[data-d="1"]{transition-delay:.08s}.fu[data-d="2"]{transition-delay:.16s}
+    .fu[data-d="3"]{transition-delay:.24s}.fu[data-d="4"]{transition-delay:.32s}
+    .fu[data-d="5"]{transition-delay:.4s}
+
+    /* ── About ── */
+    #about { background:var(--parchment); }
+    .about-grid { display:grid; grid-template-columns:1fr 300px; gap:80px; }
+    .about-body p { font-family:var(--body); font-size:.93rem; line-height:2.08; color:var(--ink-mid); margin-bottom:22px; }
+    .pull { margin:40px 0; padding:28px 32px; border-left:3px solid var(--green-mid); background:var(--cream2); }
+    .pull p { font-family:var(--serif); font-size:1.1rem; font-style:italic; color:var(--forest); line-height:1.75; margin:0; }
+    .sidebar { display:flex; flex-direction:column; }
+    .sb { padding:22px 0; border-bottom:1px solid var(--rule-l); }
+    .sb:last-child { border-bottom:none; }
+    .sb-lbl { font-family:var(--sans); font-size:.55rem; letter-spacing:.22em; text-transform:uppercase; color:var(--green-mid); margin-bottom:9px; }
+    .sb-val { font-family:var(--body); font-size:.87rem; color:var(--ink); line-height:1.8; }
+    .sb-val small { display:block; font-size:.77rem; color:var(--ink-lt); }
+
+    /* ── Career ── */
+    #career { background:var(--cream2); }
+    .tl { display:flex; flex-direction:column; }
+    .tli { display:grid; grid-template-columns:180px 1fr; gap:0 60px; padding-bottom:60px; border-bottom:1px solid var(--rule-l); margin-bottom:60px; }
+    .tli:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .tl-period { font-family:var(--sans); font-size:.62rem; letter-spacing:.1em; color:var(--ink-lt); display:block; margin-bottom:12px; }
+    .tl-badge { display:inline-block; background:var(--green-mid); color:#fff; font-family:var(--sans); font-size:.52rem; letter-spacing:.14em; text-transform:uppercase; padding:4px 10px; }
+    .tl-firm { font-family:var(--serif); font-size:1.6rem; font-weight:400; color:var(--forest); margin-bottom:4px; line-height:1.15; }
+    .tl-role { font-family:var(--sans); font-size:.62rem; letter-spacing:.15em; text-transform:uppercase; color:var(--green-mid); margin-bottom:18px; }
+    .tl-desc { font-family:var(--body); font-size:.87rem; line-height:2.05; color:var(--ink-mid); margin-bottom:20px; }
+    .tl-achs { display:flex; flex-direction:column; gap:10px; }
+    .tl-ach { display:flex; align-items:flex-start; gap:12px; font-family:var(--body); font-size:.82rem; color:var(--ink-mid); line-height:1.8; }
+    .tl-ach::before { content:'—'; color:var(--green-mid); flex-shrink:0; font-family:var(--serif); }
+    .tl-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:22px; }
+    .tag { font-family:var(--sans); font-size:.53rem; letter-spacing:.1em; border:1px solid var(--rule); color:var(--ink-lt); padding:4px 10px; }
+
+    /* ── Asset Cards (dark forest) ── */
+    #assets { background:var(--forest2); }
+    #assets .sh { border-color:rgba(143,188,122,.1); }
+    #assets .st { color:var(--cream); }
+    #assets .sn { color:rgba(181,201,168,.3); }
+    #assets .ss { color:rgba(181,201,168,.35); }
+    .asset-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+    .asset-card { background:rgba(255,255,255,.03); border:1px solid rgba(143,188,122,.08); padding:52px 40px; position:relative; overflow:hidden; transition:transform .4s cubic-bezier(.16,1,.3,1),background .3s; }
+    .asset-card:hover { transform:translateY(-7px); background:rgba(143,188,122,.06); }
+    .ac-line { position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--green-lt),transparent); transform:scaleX(0); transition:transform .5s cubic-bezier(.16,1,.3,1); }
+    .asset-card:hover .ac-line { transform:scaleX(1); }
+    .ac-num { font-family:var(--serif); font-size:4rem; color:rgba(143,188,122,.07); line-height:1; margin-bottom:28px; display:block; }
+    .ac-icon { display:block; margin-bottom:20px; }
+    .ac-icon svg { width:30px; height:30px; stroke:rgba(143,188,122,.45); fill:none; stroke-width:1.2; }
+    .ac-name { font-family:var(--serif); font-size:1.45rem; color:var(--cream); margin-bottom:6px; }
+    .ac-ko { font-family:var(--sans); font-size:.58rem; letter-spacing:.1em; color:rgba(143,188,122,.45); display:block; margin-bottom:18px; }
+    .ac-desc { font-family:var(--body); font-size:.79rem; color:rgba(242,240,235,.45); line-height:1.92; }
+
+    /* ── Expertise (light sage) ── */
+    #expertise { background:var(--parchment); }
+    .exp-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+    .exp-card { background:var(--cream2); border:1px solid var(--rule-l); padding:44px 36px; transition:background .3s,border-color .3s,transform .3s; }
+    .exp-card:hover { background:#fff; border-color:rgba(74,140,63,.2); transform:translateY(-4px); }
+    .exp-n { font-family:var(--sans); font-size:.55rem; letter-spacing:.24em; text-transform:uppercase; color:var(--green-mid); margin-bottom:24px; display:flex; align-items:center; gap:12px; }
+    .exp-n::after { content:''; flex:1; height:1px; background:rgba(74,140,63,.15); }
+    .exp-title { font-family:var(--serif); font-size:1.2rem; color:var(--forest); margin-bottom:18px; line-height:1.2; }
+    .exp-list { list-style:none; display:flex; flex-direction:column; gap:9px; }
+    .exp-list li { font-family:var(--body); font-size:.77rem; color:var(--ink-mid); line-height:1.8; padding-left:14px; position:relative; }
+    .exp-list li::before { content:''; position:absolute; left:0; top:.68em; width:5px; height:1px; background:var(--green-lt); }
+
+    /* ── Contact ── */
+    #contact { background:var(--cream2); }
+    .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+    .contact-body { font-family:var(--body); font-size:.92rem; line-height:2.08; color:var(--ink-mid); }
+    .contact-body p { margin-bottom:16px; }
+    .contact-links { display:flex; flex-direction:column; }
+    .clink { display:flex; align-items:center; justify-content:space-between; padding:22px 0; border-bottom:1px solid var(--rule-l); text-decoration:none; color:var(--ink); transition:padding-left .3s cubic-bezier(.16,1,.3,1); }
+    .clink:first-child { border-top:1px solid var(--rule-l); }
+    .clink:hover { padding-left:10px; }
+    .clink-l { display:flex; flex-direction:column; gap:3px; }
+    .clink-type { font-family:var(--sans); font-size:.53rem; letter-spacing:.22em; text-transform:uppercase; color:var(--green-mid); }
+    .clink-val { font-family:var(--serif); font-size:1.05rem; color:var(--forest); }
+    .clink-arr { font-size:.75rem; color:var(--ink-lt); transition:transform .3s,color .3s; }
+    .clink:hover .clink-arr { transform:translateX(6px); color:var(--green-mid); }
+
+    /* ── Footer ── */
+    footer { background:var(--forest); }
+    .fi { max-width:1200px; margin:0 auto; padding:28px 52px; display:flex; justify-content:space-between; align-items:center; }
+    .fc { font-family:var(--sans); font-size:.58rem; letter-spacing:.1em; color:rgba(181,201,168,.3); }
+    .fr { font-family:var(--sans); font-size:.56rem; letter-spacing:.08em; color:rgba(181,201,168,.2); }
+
+    /* ── Responsive ── */
+    @media(max-width:860px){
+      .nav-inner,.hero-content,.sw,.fi{padding-left:24px;padding-right:24px}
+      .nl{display:none}
+      .hero-scroll{left:24px}
+      .sh{grid-template-columns:1fr}.sn{display:none}
+      .about-grid,.contact-grid{grid-template-columns:1fr;gap:48px}
+      .tli{grid-template-columns:1fr}.tl-l{margin-bottom:14px}
+      .asset-grid,.exp-grid{grid-template-columns:1fr}
+      .fi{flex-direction:column;gap:10px;text-align:center}
+    }
+  </style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- NAV -->
+<nav id="nav" class="light">
+  <div class="nav-bar"></div>
+  <div class="nav-inner">
+    <a href="#hero" class="logo">Jeong Sangwoo · 정상우</a>
+    <ul class="nl">
+      <li><a href="#about">소개</a></li>
+      <li><a href="#career">경력</a></li>
+      <li><a href="#assets">자산군</a></li>
+      <li><a href="#expertise">전문역량</a></li>
+      <li><a href="#contact">연락처</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="forest-canvas"></canvas>
+  <div class="h-ov1"></div>
+  <div class="h-ov2"></div>
+
+  <div class="hero-content">
+    <div class="hero-kicker rv"><span class="rl">부동산 투자운용 전문가 · Real Estate Investment Professional</span></div>
+    <h1 class="hero-h1">
+      <span class="rv"><span class="rl" data-d="1">Jeong</span></span>
+      <span class="rv"><span class="rl" data-d="2">Sangwoo</span></span>
+      <em class="rv"><span class="rl" data-d="3">정 상 우</span></em>
+    </h1>
+    <p class="hero-sub rv">
+      <span class="rl" data-d="4">국내 부동산 PEF 투자운용사에서 딜 소싱부터 엑싯 전략까지,<br>호텔·물류·오피스 전반의 실무 경험을 보유하고 있습니다.</span>
+    </p>
+    <div class="hero-stats fu" data-d="4">
+      <div><span class="stat-num">1+</span><span class="stat-lbl">실무 경력 (년)</span></div>
+      <div><span class="stat-num" data-count="3">0</span><span class="stat-lbl">주요 자산군</span></div>
+      <div><span class="stat-num">PEF</span><span class="stat-lbl">펀드 구조 경험</span></div>
+    </div>
+    <div class="hero-cta fu" data-d="5">
+      <a href="#career" class="btn-solid">경력 보기 →</a>
+      <a href="#contact" class="btn-ghost">연락하기</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-track"><div class="scroll-dot"></div></div>
+    Scroll
+  </div>
+
+  <div class="hero-ticker">
+    <div class="ticker-track">
+      <div class="ticker-item">서울 오피스 Cap Rate <span class="ticker-val">4.2%</span></div>
+      <div class="ticker-item">수도권 물류 공실률 <span class="ticker-val">&lt; 3%</span></div>
+      <div class="ticker-item">호텔 ADR <span class="ticker-val">▲ YoY 회복세</span></div>
+      <div class="ticker-item">한국 기준금리 <span class="ticker-val">3.50%</span></div>
+      <div class="ticker-item">CD 91일물 <span class="ticker-val">3.71%</span></div>
+      <div class="ticker-item">KRW/USD <span class="ticker-val">~1,380</span></div>
+      <div class="ticker-item">서울 오피스 Cap Rate <span class="ticker-val">4.2%</span></div>
+      <div class="ticker-item">수도권 물류 공실률 <span class="ticker-val">&lt; 3%</span></div>
+      <div class="ticker-item">호텔 ADR <span class="ticker-val">▲ YoY 회복세</span></div>
+      <div class="ticker-item">한국 기준금리 <span class="ticker-val">3.50%</span></div>
+      <div class="ticker-item">CD 91일물 <span class="ticker-val">3.71%</span></div>
+      <div class="ticker-item">KRW/USD <span class="ticker-val">~1,380</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sw">
+    <div class="sh fu"><div class="sn">01 — About</div><div><h2 class="st">투자의 본질은<br>맥락의 이해</h2><div class="ss">Professional Overview</div></div></div>
+    <div class="about-grid">
+      <div class="about-body fu" data-d="1">
+        <p>부동산 자산운용사에서 실무를 쌓으며, 단순한 수치 분석을 넘어 시장 구조와 자산의 맥락을 입체적으로 파악하는 것이 좋은 투자 의사결정의 핵심임을 경험하고 있습니다.</p>
+        <p>딜 검토 단계에서의 초기 타당성 분석부터, 투자심의위원회를 위한 장표 작성, 펀드 만기 대응 전략 수립까지 — 투자 사이클 전반에 걸쳐 실질적인 역할을 수행하고 있습니다.</p>
+        <div class="pull"><p>"좋은 투자는 숫자에서 시작하지만,<br>탁월한 투자는 맥락에서 완성된다."</p></div>
+        <p>호텔, 물류센터, 오피스 등 자산군별 특성을 이해하고, 각각의 리스크-리턴 구조에 맞는 분석 프레임을 적용하는 것을 중요하게 여깁니다. PEF·REF 이중 구조, SPC 활용, MRG 안전 마진 등 복잡한 딜 구조에도 실무적 경험이 있습니다.</p>
+      </div>
+      <div class="sidebar fu" data-d="2">
+        <div class="sb"><div class="sb-lbl">현재 역할</div><div class="sb-val">매니저 · 우미글로벌</div></div>
+        <div class="sb"><div class="sb-lbl">경력</div><div class="sb-val">2024.02 — 현재<small>Manager</small></div></div>
+        <div class="sb"><div class="sb-lbl">학력</div><div class="sb-val">건국대학교<small>부동산학과 학사 · 2024 졸업</small></div></div>
+        <div class="sb"><div class="sb-lbl">자격증</div><div class="sb-val">투자자산운용사</div></div>
+        <div class="sb"><div class="sb-lbl">주요 자산군</div><div class="sb-val">Hospitality · Logistics · Office</div></div>
+        <div class="sb"><div class="sb-lbl">소재지</div><div class="sb-val">서울, 대한민국</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAREER -->
+<section id="career">
+  <div class="sw">
+    <div class="sh fu"><div class="sn">02 — Career</div><div><h2 class="st">경력 사항</h2><div class="ss">Professional Experience</div></div></div>
+    <div class="tl">
+      <div class="tli fu">
+        <div class="tl-l"><span class="tl-period">2024.02 — 현재</span><span class="tl-badge">Current</span></div>
+        <div>
+          <div class="tl-firm">우미글로벌</div>
+          <div class="tl-role">매니저 · Manager</div>
+          <p class="tl-desc">호텔, 물류센터, 오피스 등 다양한 자산군에 걸쳐 딜 검토, 투자심의 자료 작성, 펀드 운용 실무를 담당합니다. PEF·REF 이중 구조 및 SPC 활용 딜 구조 분석 등 복잡한 거래 구조에서도 실질적인 역할을 수행하고 있습니다.</p>
+          <div class="tl-achs">
+            <div class="tl-ach">Tapestry Collection by Hilton 브랜드 호텔 PEF 딜 검토 및 IM 작성 주도. ADR 검증, NOI/Cap Rate 밸류에이션, IRR 시나리오 분석 수행.</div>
+            <div class="tl-ach">PEF·REF 이중 구조(SPC 활용) 펀드 설계 실무. MRG 안전 마진 산정, 배당 재원 구조 설계 등 복잡한 딜 구조 분석 경험.</div>
+            <div class="tl-ach">서울 프라임 오피스(Glasstower, Linsquare 등) 보유 펀드 만기 대응 전략 검토. 투자심의위원회 장표 작성 및 발표 지원.</div>
+            <div class="tl-ach">용인 물류센터 지구단위계획 IM 분석. 산업단지 용도 분류, KEPCO 보증계약 구조 등 물류 자산 특수 구조 이해.</div>
+            <div class="tl-ach">CD/CP/CDS 스프레드, Cap Rate vs. 국채 스프레드 등 금리 시장 분석 자료 작성. SEIBro·연합인포맥스 활용 PF ABCP 금리 데이터 분석.</div>
+          </div>
+          <div class="tl-tags">
+            <span class="tag">Deal Sourcing</span><span class="tag">Financial Modeling</span>
+            <span class="tag">PEF / REF</span><span class="tag">IRR / MOIC</span>
+            <span class="tag">Cap Rate</span><span class="tag">투자심의자료</span>
+            <span class="tag">Asset Management</span><span class="tag">IR</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tli fu" data-d="1">
+        <div class="tl-l"><span class="tl-period">2018.03 — 2024.02</span></div>
+        <div>
+          <div class="tl-firm">건국대학교</div>
+          <div class="tl-role">부동산학과 · 학사</div>
+          <p class="tl-desc">부동산 투자론, 부동산 금융, 감정평가론, 도시계획 등 부동산 전반의 이론과 실무 기초를 체계적으로 습득하였습니다.</p>
+          <div class="tl-tags">
+            <span class="tag">투자자산운용사</span>
+            <span class="tag">부동산학 학사</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ASSETS (dark) -->
+<section id="assets">
+  <div class="sw">
+    <div class="sh fu"><div class="sn">03 — Assets</div><div><h2 class="st">투자 자산군</h2><div class="ss">Asset Class Coverage</div></div></div>
+    <div class="asset-grid">
+      <div class="asset-card fu" data-d="1">
+        <div class="ac-line"></div>
+        <span class="ac-num">01</span>
+        <span class="ac-icon"><svg viewBox="0 0 32 32"><rect x="4" y="14" width="24" height="14" rx="1"/><path d="M2 14l14-10 14 10"/><rect x="12" y="20" width="8" height="8"/></svg></span>
+        <div class="ac-name">Hospitality</div>
+        <span class="ac-ko">호텔 · 숙박시설</span>
+        <p class="ac-desc">4성급 브랜드 호텔 PEF 딜 투자 검토 및 IM 작성 주도. ADR·RevPAR 검증, 호스피탈리티 밸류업 전략 구조 분석. PEF + REF 이중 구조 설계 경험.</p>
+      </div>
+      <div class="asset-card fu" data-d="2">
+        <div class="ac-line"></div>
+        <span class="ac-num">02</span>
+        <span class="ac-icon"><svg viewBox="0 0 32 32"><rect x="2" y="10" width="28" height="18" rx="1"/><path d="M2 16h28"/><rect x="6" y="4" width="20" height="6"/></svg></span>
+        <div class="ac-name">Logistics</div>
+        <span class="ac-ko">물류센터 · 산업시설</span>
+        <p class="ac-desc">수도권 물류센터 지구단위계획 IM 분석 및 투자 검토. 산업단지 용도 분류, KEPCO 보증계약 구조, e-커머스 수요 기반 수급 동향 파악.</p>
+      </div>
+      <div class="asset-card fu" data-d="3">
+        <div class="ac-line"></div>
+        <span class="ac-num">03</span>
+        <span class="ac-icon"><svg viewBox="0 0 32 32"><rect x="6" y="2" width="20" height="28" rx="1"/><line x1="10" y1="8" x2="22" y2="8"/><line x1="10" y1="13" x2="22" y2="13"/><line x1="10" y1="18" x2="22" y2="18"/></svg></span>
+        <div class="ac-name">Office</div>
+        <span class="ac-ko">오피스 · 업무시설</span>
+        <p class="ac-desc">서울 프라임 오피스 보유 펀드 만기 대응 전략 검토. 매각·리파이낸싱 시나리오별 수익률 분석. Cap Rate 스프레드 vs. 국채 분석.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERTISE -->
+<section id="expertise">
+  <div class="sw">
+    <div class="sh fu"><div class="sn">04 — Expertise</div><div><h2 class="st">전문 역량</h2><div class="ss">Core Capabilities</div></div></div>
+    <div class="exp-grid">
+      <div class="exp-card fu" data-d="1"><div class="exp-n">01</div><div class="exp-title">투자 분석</div><ul class="exp-list"><li>NOI / Cap Rate 밸류에이션</li><li>IRR · MOIC · CoC 수익률 분석</li><li>민감도 분석 · 시나리오 모델링</li><li>DCF · 잔존가치 산정</li><li>시장 조사 및 타당성 검토</li></ul></div>
+      <div class="exp-card fu" data-d="2"><div class="exp-n">02</div><div class="exp-title">펀드 구조 설계</div><ul class="exp-list"><li>PEF · REF 이중 구조 설계</li><li>SPC 활용 자산 보유 구조</li><li>MRG 안전 마진 산정</li><li>배당 재원 구조 설계</li><li>PF ABCP · 금리 조건 분석</li></ul></div>
+      <div class="exp-card fu" data-d="3"><div class="exp-n">03</div><div class="exp-title">IR 및 자료 작성</div><ul class="exp-list"><li>투자심의위원회 장표 작성</li><li>투자설명서(IM) 작성</li><li>시장 현황 및 금리 분석 자료</li><li>LP 보고서 및 IR 자료</li><li>PowerPoint · Excel 고급 활용</li></ul></div>
+      <div class="exp-card fu" data-d="1"><div class="exp-n">04</div><div class="exp-title">자산관리</div><ul class="exp-list"><li>운용 자산 모니터링</li><li>펀드 만기 대응 전략</li><li>매각 · 리파이낸싱 시나리오</li><li>협력사(PM·AM) 관리</li><li>임차인 관리 · 공실 리스크</li></ul></div>
+      <div class="exp-card fu" data-d="2"><div class="exp-n">05</div><div class="exp-title">금리 · 시장 분석</div><ul class="exp-list"><li>CD · CP · CDS 스프레드 분석</li><li>Cap Rate vs. 국채 스프레드</li><li>SEIBro · 연합인포맥스 활용</li><li>Fed 정책 · 한국은행 금리 분석</li><li>섹터별 공급 · 수요 동향</li></ul></div>
+      <div class="exp-card fu" data-d="3"><div class="exp-n">06</div><div class="exp-title">법적 · 규제 구조</div><ul class="exp-list"><li>산업단지 · 지구단위계획 이해</li><li>산업유통형 용도 분류</li><li>KEPCO 보증계약 구조</li><li>부동산 세무 기초 (증여세 등)</li><li>건축법 면적 산정 (발코니 등)</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sw">
+    <div class="sh fu"><div class="sn">05 — Contact</div><div><h2 class="st">연락처</h2><div class="ss">Get in Touch</div></div></div>
+    <div class="contact-grid">
+      <div class="contact-body fu" data-d="1">
+        <p>투자 기회 공유, 협업 제안, 또는 부동산 시장 관련 논의를 위해 언제든지 연락 주세요.</p>
+        <p>국내외 부동산 자산 투자, 펀드 구조, 시장 분석 등의 주제라면 언제나 환영합니다.</p>
+      </div>
+      <div class="contact-links fu" data-d="2">
+        <a href="mailto:your.email@example.com" class="clink"><div class="clink-l"><span class="clink-type">Email</span><span class="clink-val">your.email@example.com</span></div><span class="clink-arr">→</span></a>
+        <a href="https://linkedin.com/in/%EC%83%81%EC%9A%B0-%EC%A0%95-133743255/" class="clink" target="_blank"><div class="clink-l"><span class="clink-type">LinkedIn</span><span class="clink-val">linkedin.com/in/상우-정</span></div><span class="clink-arr">→</span></a>
+        <a href="https://github.com/yourusername" class="clink" target="_blank"><div class="clink-l"><span class="clink-type">GitHub</span><span class="clink-val">github.com/yourusername</span></div><span class="clink-arr">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="fi"><div class="fc">© 2024 Jeong Sangwoo · 정상우. All rights reserved.</div><div class="fr">Seoul · 우미글로벌 · 건국대학교 부동산학과</div></div></footer>
+
+<!-- ══════════════════════════════════════
+     FOREST CANOPY CANVAS ENGINE
+══════════════════════════════════════ -->
+<script>
+/* ── Cursor ── */
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function ac(){cur.style.left=mx+'px';cur.style.top=my+'px';rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ac);})();
+
+/* ══════════════════════════
+   FOREST CANOPY
+══════════════════════════ */
+const canvas=document.getElementById('forest-canvas');
+const ctx=canvas.getContext('2d');
+let W,H,t=0;
+
+/* --- Branch / Tree system --- */
+const PALETTE={
+  bg:['#060e07','#091209','#0a1a0b'],        // sky behind canopy
+  trunk:['#1a2e14','#152511','#0f1c0d'],
+  leaf:['#1a4020','#1f5226','#245e2a','#2d7034','#347a3a','#3d8e42','#4a9e4e'],
+  leafLight:['#4aaa45','#5fbb55','#72c966','#86d478','#9dde8e'],
+  sunray:'rgba(255,235,180,',
+};
+
+/* God-ray beams */
+const RAYS=[];
+function initRays(){
+  RAYS.length=0;
+  const count=10+Math.floor(W/120);
+  for(let i=0;i<count;i++){
+    RAYS.push({
+      x: 0.1*W + Math.random()*0.8*W,
+      angle: -Math.PI/2 + (Math.random()-.5)*0.45,
+      width: 18+Math.random()*60,
+      alpha: 0.03+Math.random()*0.07,
+      speed: 0.0003+Math.random()*0.0004,
+      phase: Math.random()*Math.PI*2,
+      length: H*0.6+Math.random()*H*0.4,
+    });
+  }
+}
+
+function drawRays(time){
+  RAYS.forEach(r=>{
+    const sway=Math.sin(time*r.speed+r.phase)*0.04;
+    const angle=r.angle+sway;
+    const ex=r.x+Math.cos(angle)*r.length;
+    const ey=r.y+Math.sin(angle)*r.length;  // r.y will be set to 0
+
+    const grad=ctx.createLinearGradient(r.x,0,ex,ey);
+    const a=r.alpha*(0.7+0.3*Math.sin(time*0.0007+r.phase));
+    grad.addColorStop(0, r.sunray+a+')');
+    grad.addColorStop(0.4, r.sunray+(a*0.5)+')');
+    grad.addColorStop(1, r.sunray+'0)');
+
+    ctx.save();
+    ctx.beginPath();
+    // trapezoid beam
+    const hw=r.width/2;
+    const ex2=r.x+Math.cos(angle+Math.PI/2)*hw;
+    const ey2=Math.sin(angle+Math.PI/2)*hw;
+    const ex3=r.x-Math.cos(angle+Math.PI/2)*hw;
+    const ey3=-Math.sin(angle+Math.PI/2)*hw;
+    const spread=r.length*Math.tan(0.06);
+    const bx1=ex+Math.cos(angle+Math.PI/2)*(hw+spread);
+    const by1=ey+Math.sin(angle+Math.PI/2)*(hw+spread);
+    const bx2=ex-Math.cos(angle+Math.PI/2)*(hw+spread);
+    const by2=ey-Math.sin(angle+Math.PI/2)*(hw+spread);
+    ctx.moveTo(r.x+Math.cos(angle+Math.PI/2)*hw, Math.sin(angle+Math.PI/2)*hw);
+    ctx.lineTo(r.x-Math.cos(angle+Math.PI/2)*hw, -Math.sin(angle+Math.PI/2)*hw);
+    ctx.lineTo(bx2,by2);
+    ctx.lineTo(bx1,by1);
+    ctx.closePath();
+    ctx.fillStyle=grad;
+    ctx.globalCompositeOperation='screen';
+    ctx.fill();
+    ctx.globalCompositeOperation='source-over';
+    ctx.restore();
+  });
+}
+
+/* --- Leaf cluster --- */
+function drawLeaf(x,y,size,angle,colorIdx,alpha,sway){
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.rotate(angle+sway);
+  ctx.globalAlpha=alpha;
+  ctx.beginPath();
+  // elliptical leaf
+  ctx.ellipse(0,0,size*0.5,size,0,0,Math.PI*2);
+  ctx.fillStyle=PALETTE.leaf[colorIdx%PALETTE.leaf.length];
+  ctx.fill();
+  // vein
+  ctx.beginPath();
+  ctx.moveTo(0,-size);ctx.lineTo(0,size);
+  ctx.strokeStyle='rgba(0,0,0,.15)';ctx.lineWidth=.5;ctx.stroke();
+  ctx.restore();
+}
+
+/* Recursive branch */
+function drawBranch(x,y,len,angle,depth,time){
+  if(depth===0||len<4) return;
+  const sway=Math.sin(time*0.0008+depth*0.7+x*0.003)*0.06*(4-Math.min(depth,3));
+  const ex=x+Math.cos(angle+sway)*len;
+  const ey=y+Math.sin(angle+sway)*len;
+
+  ctx.beginPath();
+  ctx.moveTo(x,y);
+  ctx.lineTo(ex,ey);
+  ctx.strokeStyle=PALETTE.trunk[Math.min(depth,2)];
+  ctx.lineWidth=Math.max(1,depth*1.8);
+  ctx.lineCap='round';
+  ctx.stroke();
+
+  // leaf clusters at tips
+  if(depth<=2){
+    const leafCount=5+Math.floor(Math.random()*6);
+    const ci=Math.floor(Math.random()*PALETTE.leaf.length);
+    for(let i=0;i<leafCount;i++){
+      const lx=ex+(Math.random()-.5)*len*1.4;
+      const ly=ey+(Math.random()-.5)*len*1.4;
+      const ls=8+Math.random()*20;
+      const la=Math.PI*2*Math.random();
+      const ls2=Math.sin(time*0.0006+lx*0.01+i)*0.08;
+      const alpha=0.55+Math.random()*0.35;
+      drawLeaf(lx,ly,ls,la,ci+i,alpha,ls2);
+    }
+    // bright highlight leaves
+    if(Math.random()<0.3){
+      const ci2=Math.floor(Math.random()*PALETTE.leafLight.length);
+      const lx=ex+(Math.random()-.5)*len;
+      const ly=ey+(Math.random()-.5)*len;
+      ctx.save();ctx.translate(lx,ly);ctx.rotate(Math.random()*Math.PI*2);
+      ctx.globalAlpha=0.3+Math.random()*0.4;
+      ctx.beginPath();ctx.ellipse(0,0,5+Math.random()*10,10+Math.random()*18,0,0,Math.PI*2);
+      ctx.fillStyle=PALETTE.leafLight[ci2];ctx.fill();ctx.restore();
+    }
+  }
+
+  // split
+  const spread=0.3+depth*0.08;
+  drawBranch(ex,ey,len*(0.62+Math.random()*0.1),angle-spread+(Math.random()*.15),depth-1,time);
+  drawBranch(ex,ey,len*(0.62+Math.random()*0.1),angle+spread-(Math.random()*.15),depth-1,time);
+  if(depth>=3&&Math.random()<0.5)
+    drawBranch(ex,ey,len*(0.5+Math.random()*.1),angle+(Math.random()-.5)*0.6,depth-2,time);
+}
+
+/* Tree roots/sources around edges & bottom */
+let trees=[];
+function initTrees(){
+  trees=[];
+  // bottom left
+  const count=Math.floor(4+W/260);
+  const positions=[];
+  for(let i=0;i<count;i++) positions.push({x:(i/(count-1))*W*1.1-W*0.05, side:'bottom'});
+  // side crawlers
+  positions.push({x:-20,side:'left'});
+  positions.push({x:W+20,side:'right'});
+  positions.forEach((p,i)=>{
+    let sx,sy,angle;
+    if(p.side==='bottom'){sx=p.x;sy=H+10;angle=-Math.PI/2+(Math.random()-.5)*0.3;}
+    else if(p.side==='left'){sx=0;sy=H*(0.2+Math.random()*0.6);angle=-0.3+(Math.random()-.5)*0.4;}
+    else{sx=W;sy=H*(0.2+Math.random()*0.6);angle=Math.PI+0.3+(Math.random()-.5)*0.4;}
+    trees.push({sx,sy,angle,len:H*(0.38+Math.random()*0.28),phase:Math.random()*100});
+  });
+}
+
+/* Floating dust/spore particles */
+const SPORES=[];
+function initSpores(){
+  SPORES.length=0;
+  const n=Math.floor(W*H/4000);
+  for(let i=0;i<n;i++) SPORES.push({
+    x:Math.random()*W, y:Math.random()*H,
+    r:.5+Math.random()*1.5,
+    vy:-.08-.1*Math.random(), vx:(Math.random()-.5)*.1,
+    alpha:.1+Math.random()*.4,
+    phase:Math.random()*Math.PI*2
+  });
+}
+function drawSpores(time){
+  SPORES.forEach(s=>{
+    const a=s.alpha*(0.5+0.5*Math.sin(time*.002+s.phase));
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(220,255,200,${a})`;ctx.fill();
+    s.y+=s.vy;s.x+=s.vx+Math.sin(time*.001+s.phase)*.2;
+    if(s.y<-5){s.y=H+5;s.x=Math.random()*W;}
+    if(s.x<0)s.x=W;if(s.x>W)s.x=0;
+  });
+}
+
+function resize(){
+  W=canvas.width=canvas.offsetWidth;
+  H=canvas.height=canvas.offsetHeight;
+  initRays(); initTrees(); initSpores();
+}
+
+let seed=0;
+function seededRand(n){seed=(seed*1664525+1013904223)&0xffffffff;return((seed>>>0)/0xffffffff)*n;}
+
+function drawFrame(time){
+  t=time;
+  ctx.clearRect(0,0,W,H);
+
+  // Sky / dark canopy bg
+  const skyGrad=ctx.createRadialGradient(W/2,H*0.15,0,W/2,H*0.15,H*.9);
+  skyGrad.addColorStop(0,'#1a3520');
+  skyGrad.addColorStop(0.4,'#0d1f10');
+  skyGrad.addColorStop(1,'#060e07');
+  ctx.fillStyle=skyGrad;ctx.fillRect(0,0,W,H);
+
+  // God rays (behind trees)
+  drawRays(time);
+
+  // Trees — use seeded randomness per tree so they don't re-randomize every frame
+  trees.forEach((tr,i)=>{
+    seed=i*997+1;
+    ctx.save();
+    drawBranch(tr.sx,tr.sy,tr.len,tr.angle,6,time+tr.phase*1000);
+    ctx.restore();
+  });
+
+  // Ambient green atmospheric haze
+  const hazeGrad=ctx.createRadialGradient(W/2,H*0.3,H*.1,W/2,H*0.3,H*.9);
+  hazeGrad.addColorStop(0,'rgba(30,80,20,.0)');
+  hazeGrad.addColorStop(1,'rgba(5,15,5,.35)');
+  ctx.fillStyle=hazeGrad;ctx.fillRect(0,0,W,H);
+
+  // Floating spores / dust
+  drawSpores(time);
+
+  requestAnimationFrame(drawFrame);
+}
+
+window.addEventListener('resize',()=>{resize();},{ passive:true });
+resize();
+requestAnimationFrame(drawFrame);
+
+/* ── Nav state ── */
+const nav=document.getElementById('nav'),heroSec=document.getElementById('hero');
+function updateNav(){
+  const hb=heroSec.getBoundingClientRect().bottom;
+  nav.classList.toggle('scrolled',window.scrollY>60);
+  if(hb>56){nav.classList.add('light');}else{nav.classList.remove('light');}
+}
+window.addEventListener('scroll',updateNav,{passive:true});updateNav();
+
+/* ── Hero text reveal ── */
+setTimeout(()=>{document.querySelectorAll('.rl').forEach((el,i)=>setTimeout(()=>el.classList.add('in'),i*90));},200);
+
+/* ── Counter ── */
+function animCount(el,target){
+  const s=performance.now();const d=1400;
+  (function step(now){
+    const p=Math.min((now-s)/d,1),e=1-Math.pow(1-p,3);
+    el.textContent=Math.round(e*target)+(target===3?'+':'');
+    if(p<1)requestAnimationFrame(step);
+  })(s);
+}
+let counted=false;
+new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting&&!counted){counted=true;document.querySelectorAll('[data-count]').forEach(el=>animCount(el,+el.dataset.count));}});
+},{threshold:.5}).observe(document.querySelector('.hero-stats'));
+
+/* ── Scroll reveal ── */
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:.1});
+document.querySelectorAll('.fu').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
