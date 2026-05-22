@@ -209,10 +209,52 @@
     #assets .sn { color:rgba(181,201,168,.3); }
     #assets .ss { color:rgba(181,201,168,.35); }
     .asset-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
-    .asset-card { background:rgba(255,255,255,.03); border:1px solid rgba(143,188,122,.08); padding:52px 40px; position:relative; overflow:hidden; transition:transform .4s cubic-bezier(.16,1,.3,1),background .3s; }
+    .asset-card { background:rgba(255,255,255,.03); border:1px solid rgba(143,188,122,.08); padding:52px 40px; position:relative; overflow:hidden; transition:transform .4s cubic-bezier(.16,1,.3,1),background .3s; cursor:pointer; }
     .asset-card:hover { transform:translateY(-7px); background:rgba(143,188,122,.06); }
     .ac-line { position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--green-lt),transparent); transform:scaleX(0); transition:transform .5s cubic-bezier(.16,1,.3,1); }
     .asset-card:hover .ac-line { transform:scaleX(1); }
+    .ac-portfolio-hint { font-family:var(--sans); font-size:.55rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(143,188,122,.5); margin-top:20px; display:flex; align-items:center; gap:6px; transition:color .2s; }
+    .asset-card:hover .ac-portfolio-hint { color:rgba(143,188,122,.9); }
+    .ac-portfolio-hint::before { content:''; width:16px; height:1px; background:currentColor; }
+
+    /* ── Modal ── */
+    #modal-overlay { position:fixed; inset:0; background:rgba(6,14,7,.85); z-index:500; opacity:0; pointer-events:none; transition:opacity .4s ease; backdrop-filter:blur(6px); }
+    #modal-overlay.open { opacity:1; pointer-events:all; }
+    #modal-box { position:fixed; top:50%; left:50%; transform:translate(-50%,-52%); z-index:501; width:min(860px,92vw); max-height:88vh; overflow-y:auto; background:var(--parchment); opacity:0; pointer-events:none; transition:opacity .4s ease, transform .4s cubic-bezier(.16,1,.3,1); }
+    #modal-overlay.open #modal-box { opacity:1; pointer-events:all; transform:translate(-50%,-50%); }
+    .modal-header { background:var(--forest); padding:40px 48px 32px; position:relative; }
+    .modal-close { position:absolute; top:20px; right:24px; background:none; border:none; color:rgba(242,240,235,.4); font-size:1.4rem; cursor:pointer; line-height:1; padding:8px; transition:color .2s; }
+    .modal-close:hover { color:var(--cream); }
+    .modal-asset-type { font-family:var(--sans); font-size:.58rem; letter-spacing:.24em; text-transform:uppercase; color:rgba(143,188,122,.6); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+    .modal-asset-type::before { content:''; width:20px; height:1px; background:rgba(143,188,122,.4); }
+    .modal-title { font-family:var(--serif); font-size:clamp(1.8rem,4vw,2.8rem); font-weight:400; color:var(--cream); line-height:1.1; margin-bottom:8px; }
+    .modal-subtitle { font-family:var(--sans); font-size:.7rem; color:rgba(181,201,168,.5); letter-spacing:.08em; }
+    .modal-meta-row { display:flex; flex-wrap:wrap; gap:2px; margin-top:28px; }
+    .modal-meta-item { background:rgba(143,188,122,.08); border:1px solid rgba(143,188,122,.12); padding:10px 18px; }
+    .modal-meta-label { font-family:var(--sans); font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(181,201,168,.45); display:block; margin-bottom:4px; }
+    .modal-meta-val { font-family:var(--serif); font-size:.95rem; color:var(--cream); }
+    .modal-body { padding:40px 48px; }
+    .modal-section-title { font-family:var(--sans); font-size:.58rem; letter-spacing:.22em; text-transform:uppercase; color:var(--green-mid); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+    .modal-section-title::before { content:''; width:16px; height:1px; background:var(--green-mid); }
+    .modal-desc { font-family:var(--body); font-size:.92rem; line-height:2.05; color:var(--ink-mid); margin-bottom:32px; }
+    .modal-roles { display:grid; grid-template-columns:repeat(2,1fr); gap:2px; margin-bottom:32px; }
+    .modal-role-item { background:var(--cream2); padding:18px 20px; }
+    .modal-role-num { font-family:var(--serif); font-size:1.1rem; color:var(--forest); display:block; margin-bottom:6px; }
+    .modal-role-desc { font-family:var(--sans); font-size:.78rem; color:var(--ink-mid); line-height:1.7; }
+    .modal-tags { display:flex; flex-wrap:wrap; gap:6px; }
+    .modal-back { background:none; border:none; font-family:var(--sans); font-size:.62rem; letter-spacing:.1em; color:rgba(181,201,168,.55); cursor:pointer; padding:0; margin-bottom:16px; display:block; transition:color .2s; }
+    .modal-back:hover { color:var(--cream); }
+    .modal-list { display:flex; flex-direction:column; gap:2px; }
+    .modal-list-item { display:flex; align-items:center; justify-content:space-between; padding:22px 24px; background:var(--cream2); border:1px solid var(--rule-l); cursor:pointer; transition:background .2s, padding-left .25s; }
+    .modal-list-item:hover { background:#fff; padding-left:32px; }
+    .mli-left { display:flex; align-items:center; gap:20px; }
+    .mli-num { font-family:var(--serif); font-size:1.6rem; color:rgba(196,191,180,.6); line-height:1; min-width:32px; }
+    .mli-name { font-family:var(--serif); font-size:1.3rem; color:var(--forest); margin-bottom:4px; }
+    .mli-sub { font-family:var(--sans); font-size:.65rem; color:var(--ink-lt); letter-spacing:.04em; }
+    .mli-right { display:flex; align-items:center; gap:14px; }
+    .mli-tag { font-family:var(--sans); font-size:.55rem; letter-spacing:.1em; border:1px solid var(--rule); color:var(--ink-lt); padding:4px 10px; }
+    .mli-arr { font-size:.8rem; color:var(--ink-lt); transition:transform .25s, color .25s; }
+    .modal-list-item:hover .mli-arr { transform:translateX(5px); color:var(--green-mid); }
     .ac-num { font-family:var(--serif); font-size:4rem; color:rgba(143,188,122,.07); line-height:1; margin-bottom:28px; display:block; }
     .ac-icon { display:block; margin-bottom:20px; }
     .ac-icon svg { width:30px; height:30px; stroke:rgba(143,188,122,.45); fill:none; stroke-width:1.2; }
@@ -523,13 +565,14 @@
   <div class="sw">
     <div class="sh fu"><div class="sn">03 — Assets</div><div><h2 class="st">투자 자산군</h2><div class="ss">Asset Class Coverage</div></div></div>
     <div class="asset-grid" style="grid-template-columns:repeat(4,1fr)">
-      <div class="asset-card fu" data-d="1">
+      <div class="asset-card fu" data-d="1" onclick="openModal('office')">
         <div class="ac-line"></div>
         <span class="ac-num">01</span>
         <span class="ac-icon"><svg viewBox="0 0 32 32"><rect x="6" y="2" width="20" height="28" rx="1"/><line x1="10" y1="8" x2="22" y2="8"/><line x1="10" y1="13" x2="22" y2="13"/><line x1="10" y1="18" x2="22" y2="18"/></svg></span>
         <div class="ac-name">Office</div>
         <span class="ac-ko">오피스 · 업무시설</span>
         <p class="ac-desc">서울 프라임 오피스 보유 펀드 만기 대응 전략 검토. 매각·리파이낸싱 시나리오별 수익률 분석. Cap Rate 스프레드 vs. 국채 분석.</p>
+        <div class="ac-portfolio-hint">포트폴리오 보기</div>
       </div>
       <div class="asset-card fu" data-d="2">
         <div class="ac-line"></div>
@@ -593,12 +636,171 @@
   </div>
 </section>
 
+<!-- MODAL -->
+<div id="modal-overlay" onclick="closeModalOutside(event)">
+  <div id="modal-box">
+
+    <!-- OFFICE MODAL -->
+    <div id="modal-office" style="display:none">
+
+      <!-- LIST VIEW -->
+      <div id="office-list" style="display:none">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal()">✕</button>
+          <div class="modal-asset-type">Office · 오피스</div>
+          <div class="modal-title">오피스 포트폴리오</div>
+          <div class="modal-subtitle">총 2개 자산 · 서울 프라임 오피스</div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section-title">보유 자산</div>
+          <div class="modal-list">
+            <div class="modal-list-item" onclick="showDetail('glasstower')">
+              <div class="mli-left">
+                <div class="mli-num">01</div>
+                <div>
+                  <div class="mli-name">Glasstower</div>
+                  <div class="mli-sub">서울 강남 GFC · Pacific Fund 40·59호</div>
+                </div>
+              </div>
+              <div class="mli-right">
+                <span class="mli-tag">프라임 오피스</span>
+                <span class="mli-arr">→</span>
+              </div>
+            </div>
+            <div class="modal-list-item" onclick="showDetail('linsquare')">
+              <div class="mli-left">
+                <div class="mli-num">02</div>
+                <div>
+                  <div class="mli-name">Linsquare</div>
+                  <div class="mli-sub">서울 마곡 · REF 구조</div>
+                </div>
+              </div>
+              <div class="mli-right">
+                <span class="mli-tag">프라임 오피스</span>
+                <span class="mli-arr">→</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DETAIL VIEW: Glasstower -->
+      <div id="detail-glasstower" style="display:none">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal()">✕</button>
+          <button class="modal-back" onclick="showList('office')">← 목록으로</button>
+          <div class="modal-asset-type">Office · 오피스</div>
+          <div class="modal-title">Glasstower</div>
+          <div class="modal-subtitle">서울특별시 강남구 테헤란로 534 · GFC</div>
+          <div class="modal-meta-row">
+            <div class="modal-meta-item"><span class="modal-meta-label">유형</span><span class="modal-meta-val">프라임 오피스</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">위치</span><span class="modal-meta-val">서울 강남 GFC</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">펀드</span><span class="modal-meta-val">Pacific Fund 40·59호</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">참여 역할</span><span class="modal-meta-val">펀드 만기 대응 · 투자심의</span></div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section-title">자산 개요</div>
+          <p class="modal-desc">Glasstower는 서울 강남 GFC(Global Finance Center) 내 위치한 프라임 오피스 자산으로, Pacific Fund 40·59호를 통해 보유 중인 핵심 오피스 자산입니다. 펀드 만기 도래 시점에서의 엑싯 전략 수립 및 투자심의위원회 대응 업무를 담당하였습니다.</p>
+          <div class="modal-section-title">주요 수행 업무</div>
+          <div class="modal-roles">
+            <div class="modal-role-item"><span class="modal-role-num">01 — 만기 대응 전략</span><div class="modal-role-desc">펀드 만기 시나리오별 매각·리파이낸싱 수익률 분석. 시장 Cap Rate 동향 반영한 자산 가치 재산정.</div></div>
+            <div class="modal-role-item"><span class="modal-role-num">02 — 투자심의자료</span><div class="modal-role-desc">투자심의위원회 보고용 장표 작성. 매각 타임라인, 예상 IRR·MOIC, 리스크 요인 정리.</div></div>
+            <div class="modal-role-item"><span class="modal-role-num">03 — 금리·시장 분석</span><div class="modal-role-desc">서울 프라임 오피스 Cap Rate vs. 국채 스프레드 분석. CD·CP 금리 동향 및 벤치마크 금리 스텝 차트 작성.</div></div>
+            <div class="modal-role-item"><span class="modal-role-num">04 — REF 구조 검토</span><div class="modal-role-desc">SPC 활용 자산 보유 구조 검토. 배당 재원 및 차환 조건 분석, 금융기관 협의 지원.</div></div>
+          </div>
+          <div class="modal-section-title">관련 역량</div>
+          <div class="modal-tags">
+            <span class="modal-tag">Cap Rate 분석</span><span class="modal-tag">IRR · MOIC</span>
+            <span class="modal-tag">REF 구조</span><span class="modal-tag">펀드 만기 대응</span>
+            <span class="modal-tag">투자심의자료</span><span class="modal-tag">매각·리파이낸싱</span>
+            <span class="modal-tag">금리 시장 분석</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DETAIL VIEW: Linsquare -->
+      <div id="detail-linsquare" style="display:none">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal()">✕</button>
+          <button class="modal-back" onclick="showList('office')">← 목록으로</button>
+          <div class="modal-asset-type">Office · 오피스</div>
+          <div class="modal-title">Linsquare</div>
+          <div class="modal-subtitle">서울특별시 강서구 마곡동 · 마곡 업무지구</div>
+          <div class="modal-meta-row">
+            <div class="modal-meta-item"><span class="modal-meta-label">유형</span><span class="modal-meta-val">프라임 오피스</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">위치</span><span class="modal-meta-val">서울 마곡</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">구조</span><span class="modal-meta-val">REF 구조</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">참여 역할</span><span class="modal-meta-val">딜 검토 · 투자심의</span></div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section-title">자산 개요</div>
+          <p class="modal-desc">Linsquare는 서울 마곡 업무지구 내 위치한 프라임 오피스 자산입니다. REF 구조 기반의 딜 검토 및 투자심의 자료 작성에 참여하였으며, 마곡 오피스 시장의 수급 동향 및 임차인 구성 분석을 수행하였습니다.</p>
+          <div class="modal-section-title">주요 수행 업무</div>
+          <div class="modal-roles">
+            <div class="modal-role-item"><span class="modal-role-num">01 — 딜 검토</span><div class="modal-role-desc">투자 타당성 검토 및 초기 밸류에이션. NOI 산정, Cap Rate 적용 자산가치 분석.</div></div>
+            <div class="modal-role-item"><span class="modal-role-num">02 — 시장 분석</span><div class="modal-role-desc">마곡 오피스 공실률·임대료 동향 분석. 주요 임차인 현황 및 만기 리스크 검토.</div></div>
+            <div class="modal-role-item"><span class="modal-role-num">03 — 투자심의자료</span><div class="modal-role-desc">투자심의위원회 보고용 장표 작성. IRR 시나리오 및 Exit 전략 정리.</div></div>
+            <div class="modal-role-item"><span class="modal-role-num">04 — REF 구조</span><div class="modal-role-desc">REF 펀드 구조 설계 검토. SPC 활용 자산 보유 방식 및 배당 구조 분석.</div></div>
+          </div>
+          <div class="modal-section-title">관련 역량</div>
+          <div class="modal-tags">
+            <span class="modal-tag">딜 검토</span><span class="modal-tag">NOI 산정</span>
+            <span class="modal-tag">Cap Rate</span><span class="modal-tag">REF 구조</span>
+            <span class="modal-tag">시장 분석</span><span class="modal-tag">투자심의자료</span>
+            <span class="modal-tag">IRR 시나리오</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end modal-office -->
+  </div><!-- end modal-box -->
+</div><!-- end modal-overlay -->
+
 <footer><div class="fi"><div class="fc">© 2024 Jeong Sangwoo · 정상우. All rights reserved.</div><div class="fr">Seoul · 우미글로벌 · 건국대학교 부동산학과</div></div></footer>
 
 <!-- ══════════════════════════════════════
      SCRIPTS
 ══════════════════════════════════════ -->
 <script>
+/* ── Modal ── */
+function openModal(type){
+  // 모든 모달 숨기기
+  document.querySelectorAll('#modal-box > div').forEach(el=>{ el.style.display='none'; });
+  // 해당 모달 보이기
+  const modal = document.getElementById('modal-'+type);
+  if(modal){
+    modal.style.display = 'block';
+    // 내부 detail 숨기고 list만 보이기
+    modal.querySelectorAll('[id^="detail-"]').forEach(el=>{ el.style.display='none'; });
+    const list = document.getElementById(type+'-list');
+    if(list) list.style.display = 'block';
+  }
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('modal-box').scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+function showDetail(id){
+  // 현재 모달 내 모든 뷰 숨기기
+  document.querySelectorAll('[id^="detail-"],[id$="-list"]').forEach(el=>{ el.style.display='none'; });
+  const el = document.getElementById('detail-'+id);
+  if(el){ el.style.display='block'; document.getElementById('modal-box').scrollTop=0; }
+}
+function showList(type){
+  document.querySelectorAll('[id^="detail-"],[id$="-list"]').forEach(el=>{ el.style.display='none'; });
+  const el = document.getElementById(type+'-list');
+  if(el){ el.style.display='block'; document.getElementById('modal-box').scrollTop=0; }
+}
+function closeModal(){
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+function closeModalOutside(e){
+  if(e.target===document.getElementById('modal-overlay')) closeModal();
+}
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+
 /* ── Cursor ── */
 const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
 let mx=0,my=0,rx=0,ry=0;
