@@ -217,11 +217,33 @@
     .asset-card:hover .ac-portfolio-hint { color:rgba(143,188,122,.9); }
     .ac-portfolio-hint::before { content:''; width:16px; height:1px; background:currentColor; }
 
+    /* ── Hover dropdown ── */
+    .ac-dropdown {
+      position:absolute; bottom:0; left:0; right:0;
+      background:rgba(10,26,12,.97);
+      border-top:1px solid rgba(143,188,122,.18);
+      max-height:0; overflow:hidden;
+      transition:max-height .4s cubic-bezier(.16,1,.3,1);
+      z-index:10;
+    }
+    .asset-card:hover .ac-dropdown { max-height:240px; }
+    .ac-dropdown-inner { padding:8px 0; }
+    .ac-dropdown-item {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:11px 22px; cursor:pointer;
+      transition:background .2s;
+    }
+    .ac-dropdown-item:hover { background:rgba(143,188,122,.1); }
+    .ac-dropdown-item-left { display:flex; align-items:center; gap:12px; }
+    .ac-dropdown-item-num { font-family:var(--serif); font-size:.95rem; color:rgba(143,188,122,.35); min-width:20px; }
+    .ac-dropdown-item-name { font-family:var(--sans); font-size:.72rem; color:rgba(242,240,235,.65); letter-spacing:.04em; }
+    .ac-dropdown-item:hover .ac-dropdown-item-name { color:var(--cream); }
+    .ac-dropdown-item-arr { font-size:.65rem; color:rgba(143,188,122,.4); transition:transform .2s, color .2s; }
+    .ac-dropdown-item:hover .ac-dropdown-item-arr { transform:translateX(4px); color:rgba(143,188,122,.9); }
+
     /* ── Modal ── */
-    #modal-overlay { position:fixed; inset:0; background:rgba(6,14,7,.85); z-index:500; opacity:0; pointer-events:none; transition:opacity .4s ease; backdrop-filter:blur(6px); }
-    #modal-overlay.open { opacity:1; pointer-events:all; }
-    #modal-box { position:fixed; top:50%; left:50%; transform:translate(-50%,-52%); z-index:501; width:min(860px,92vw); max-height:88vh; overflow-y:auto; background:var(--parchment); opacity:0; pointer-events:none; transition:opacity .4s ease, transform .4s cubic-bezier(.16,1,.3,1); }
-    #modal-overlay.open #modal-box { opacity:1; pointer-events:all; transform:translate(-50%,-50%); }
+    #modal-overlay { position:fixed; inset:0; background:rgba(6,14,7,.85); z-index:500; display:none; opacity:0; align-items:center; justify-content:center; transition:opacity .4s ease; backdrop-filter:blur(6px); }
+    #modal-box { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:501; width:min(860px,92vw); max-height:88vh; overflow-y:auto; background:var(--parchment); }
     .modal-header { background:var(--forest); padding:40px 48px 32px; position:relative; }
     .modal-close { position:absolute; top:20px; right:24px; background:none; border:none; color:rgba(242,240,235,.4); font-size:1.4rem; cursor:pointer; line-height:1; padding:8px; transition:color .2s; }
     .modal-close:hover { color:var(--cream); }
@@ -477,19 +499,8 @@
   </div>
 
   <div class="hero-ticker">
-    <div class="ticker-track">
-      <div class="ticker-item">서울 오피스 Cap Rate <span class="ticker-val">4.2%</span></div>
-      <div class="ticker-item">수도권 물류 공실률 <span class="ticker-val">&lt; 3%</span></div>
-      <div class="ticker-item">호텔 ADR <span class="ticker-val">▲ YoY 회복세</span></div>
-      <div class="ticker-item">한국 기준금리 <span class="ticker-val">3.50%</span></div>
-      <div class="ticker-item">CD 91일물 <span class="ticker-val">3.71%</span></div>
-      <div class="ticker-item">KRW/USD <span class="ticker-val">~1,380</span></div>
-      <div class="ticker-item">서울 오피스 Cap Rate <span class="ticker-val">4.2%</span></div>
-      <div class="ticker-item">수도권 물류 공실률 <span class="ticker-val">&lt; 3%</span></div>
-      <div class="ticker-item">호텔 ADR <span class="ticker-val">▲ YoY 회복세</span></div>
-      <div class="ticker-item">한국 기준금리 <span class="ticker-val">3.50%</span></div>
-      <div class="ticker-item">CD 91일물 <span class="ticker-val">3.71%</span></div>
-      <div class="ticker-item">KRW/USD <span class="ticker-val">~1,380</span></div>
+    <div class="ticker-track" id="ticker-track">
+      <div class="ticker-item">데이터 로딩 중... <span class="ticker-val">—</span></div>
     </div>
   </div>
 </section>
@@ -573,30 +584,79 @@
         <span class="ac-ko">오피스 · 업무시설</span>
         <p class="ac-desc">서울 프라임 오피스 보유 펀드 만기 대응 전략 검토. 매각·리파이낸싱 시나리오별 수익률 분석. Cap Rate 스프레드 vs. 국채 분석.</p>
         <div class="ac-portfolio-hint">포트폴리오 보기</div>
+        <div class="ac-dropdown" onclick="event.stopPropagation()">
+          <div class="ac-dropdown-inner">
+            <div class="ac-dropdown-item" onclick="openModal('office');showDetail('glasstower')">
+              <div class="ac-dropdown-item-left">
+                <span class="ac-dropdown-item-num">01</span>
+                <span class="ac-dropdown-item-name">Glasstower</span>
+              </div>
+              <span class="ac-dropdown-item-arr">→</span>
+            </div>
+            <div class="ac-dropdown-item" onclick="openModal('office');showDetail('linsquare')">
+              <div class="ac-dropdown-item-left">
+                <span class="ac-dropdown-item-num">02</span>
+                <span class="ac-dropdown-item-name">Linsquare</span>
+              </div>
+              <span class="ac-dropdown-item-arr">→</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="asset-card fu" data-d="2">
+      <div class="asset-card fu" data-d="2" onclick="openModal('logistics')">
         <div class="ac-line"></div>
         <span class="ac-num">02</span>
         <span class="ac-icon"><svg viewBox="0 0 32 32"><rect x="2" y="10" width="28" height="18" rx="1"/><path d="M2 16h28"/><rect x="6" y="4" width="20" height="6"/></svg></span>
         <div class="ac-name">Logistics</div>
         <span class="ac-ko">물류센터 · 산업시설</span>
         <p class="ac-desc">수도권 물류센터 지구단위계획 IM 분석 및 투자 검토. 산업단지 용도 분류, KEPCO 보증계약 구조, e-커머스 수요 기반 수급 동향 파악.</p>
+        <div class="ac-portfolio-hint">포트폴리오 보기</div>
+        <div class="ac-dropdown" onclick="event.stopPropagation()">
+          <div class="ac-dropdown-inner">
+            <div class="ac-dropdown-item" onclick="openModal('logistics');showDetail('yongin')">
+              <div class="ac-dropdown-item-left"><span class="ac-dropdown-item-num">01</span><span class="ac-dropdown-item-name">용인국제2차</span></div>
+              <span class="ac-dropdown-item-arr">→</span>
+            </div>
+            <div class="ac-dropdown-item" onclick="openModal('logistics');showDetail('anseong')">
+              <div class="ac-dropdown-item-left"><span class="ac-dropdown-item-num">02</span><span class="ac-dropdown-item-name">안성산하</span></div>
+              <span class="ac-dropdown-item-arr">→</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="asset-card fu" data-d="3">
+      <div class="asset-card fu" data-d="3" onclick="openModal('idc')">
         <div class="ac-line"></div>
         <span class="ac-num">03</span>
         <span class="ac-icon"><svg viewBox="0 0 32 32"><rect x="4" y="6" width="24" height="20" rx="1"/><rect x="8" y="2" width="16" height="4"/><line x1="4" y1="14" x2="28" y2="14"/><line x1="14" y1="14" x2="14" y2="26"/><line x1="20" y1="14" x2="20" y2="26"/></svg></span>
         <div class="ac-name">IDC</div>
         <span class="ac-ko">데이터센터</span>
         <p class="ac-desc">데이터센터 투자 구조 및 전력 인프라 분석. 장기 임차 안정성, 클라우드·AI 수요 기반 수급 동향 파악. REF 구조 딜 검토 경험.</p>
+        <div class="ac-portfolio-hint">포트폴리오 보기</div>
+        <div class="ac-dropdown" onclick="event.stopPropagation()">
+          <div class="ac-dropdown-inner">
+            <div class="ac-dropdown-item" onclick="openModal('idc');showDetail('munbong')">
+              <div class="ac-dropdown-item-left"><span class="ac-dropdown-item-num">01</span><span class="ac-dropdown-item-name">문봉동 IDC</span></div>
+              <span class="ac-dropdown-item-arr">→</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="asset-card fu" data-d="4">
+      <div class="asset-card fu" data-d="4" onclick="openModal('etc')">
         <div class="ac-line"></div>
         <span class="ac-num">04</span>
         <span class="ac-icon"><svg viewBox="0 0 32 32"><rect x="4" y="14" width="24" height="14" rx="1"/><path d="M2 14l14-10 14 10"/><circle cx="16" cy="22" r="3"/></svg></span>
         <div class="ac-name">기타</div>
-        <span class="ac-ko">호텔 · 주상복합 · 아파트</span>
-        <p class="ac-desc">브랜드 호텔 REF 딜 검토 및 ADR·RevPAR 분석. 주상복합·아파트 등 주거형 자산 투자 구조 이해. 다양한 자산군 밸류에이션 경험.</p>
+        <span class="ac-ko">호텔 · 주상복합 · 해외개발</span>
+        <p class="ac-desc">브랜드 호텔 REF 딜 검토 및 ADR·RevPAR 분석. 주상복합·아파트 등 주거형 자산 투자 구조 이해. 해외 부동산 개발 사업 경험.</p>
+        <div class="ac-portfolio-hint">포트폴리오 보기</div>
+        <div class="ac-dropdown" onclick="event.stopPropagation()">
+          <div class="ac-dropdown-inner">
+            <div class="ac-dropdown-item" onclick="openModal('etc');showDetail('newyork')">
+              <div class="ac-dropdown-item-left"><span class="ac-dropdown-item-num">01</span><span class="ac-dropdown-item-name">뉴욕 트라이베카 콘도</span></div>
+              <span class="ac-dropdown-item-arr">→</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -640,121 +700,429 @@
 <div id="modal-overlay" onclick="closeModalOutside(event)">
   <div id="modal-box">
 
-    <!-- OFFICE MODAL -->
+    <!-- ══ OFFICE MODAL ══ -->
     <div id="modal-office" style="display:none">
-
-      <!-- LIST VIEW -->
       <div id="office-list" style="display:none">
         <div class="modal-header">
           <button class="modal-close" onclick="closeModal()">✕</button>
           <div class="modal-asset-type">Office · 오피스</div>
           <div class="modal-title">오피스 포트폴리오</div>
-          <div class="modal-subtitle">총 2개 자산 · 서울 프라임 오피스</div>
+          <div class="modal-subtitle">총 8건 · 투자원금 합계 약 135.8억원</div>
         </div>
         <div class="modal-body">
           <div class="modal-section-title">보유 자산</div>
           <div class="modal-list">
-            <div class="modal-list-item" onclick="showDetail('glasstower')">
-              <div class="mli-left">
-                <div class="mli-num">01</div>
-                <div>
-                  <div class="mli-name">Glasstower</div>
-                  <div class="mli-sub">서울 강남 GFC · Pacific Fund 40·59호</div>
-                </div>
-              </div>
-              <div class="mli-right">
-                <span class="mli-tag">프라임 오피스</span>
-                <span class="mli-arr">→</span>
-              </div>
-            </div>
             <div class="modal-list-item" onclick="showDetail('linsquare')">
-              <div class="mli-left">
-                <div class="mli-num">02</div>
-                <div>
-                  <div class="mli-name">Linsquare</div>
-                  <div class="mli-sub">서울 마곡 · REF 구조</div>
-                </div>
-              </div>
-              <div class="mli-right">
-                <span class="mli-tag">프라임 오피스</span>
-                <span class="mli-arr">→</span>
-              </div>
+              <div class="mli-left"><div class="mli-num">01</div><div><div class="mli-name">린스퀘어</div><div class="mli-sub">퍼시픽39호 · 투자원금 30.0억원</div></div></div>
+              <div class="mli-right"><span class="mli-tag">오피스</span><span class="mli-arr">→</span></div>
+            </div>
+            <div class="modal-list-item" onclick="showDetail('glasstower40')">
+              <div class="mli-left"><div class="mli-num">02</div><div><div class="mli-name">글라스타워</div><div class="mli-sub">퍼시픽40호 · 투자원금 35.1억원</div></div></div>
+              <div class="mli-right"><span class="mli-tag">오피스</span><span class="mli-arr">→</span></div>
+            </div>
+            <div class="modal-list-item" onclick="showDetail('glasstower59')">
+              <div class="mli-left"><div class="mli-num">03</div><div><div class="mli-name">글라스타워</div><div class="mli-sub">퍼시픽59호 · 투자원금 8.3억원</div></div></div>
+              <div class="mli-right"><span class="mli-tag">오피스</span><span class="mli-arr">→</span></div>
+            </div>
+            <div class="modal-list-item" onclick="showDetail('bundang')">
+              <div class="mli-left"><div class="mli-num">04</div><div><div class="mli-name">분당롯데</div><div class="mli-sub">이지스389호 · 투자원금 45.0억원</div></div></div>
+              <div class="mli-right"><span class="mli-tag">오피스</span><span class="mli-arr">→</span></div>
+            </div>
+            <div class="modal-list-item" onclick="showDetail('suseo')">
+              <div class="mli-left"><div class="mli-num">05</div><div><div class="mli-name">수서역세권</div><div class="mli-sub">이지스PF재구조화1-2호 · 투자원금 562만원</div></div></div>
+              <div class="mli-right"><span class="mli-tag">오피스</span><span class="mli-arr">→</span></div>
+            </div>
+            <div class="modal-list-item" onclick="showDetail('yongsan')">
+              <div class="mli-left"><div class="mli-num">06</div><div><div class="mli-name">용산나진상가</div><div class="mli-sub">이지스PF재구조화1-3호 · 투자원금 2.5억원</div></div></div>
+              <div class="mli-right"><span class="mli-tag">오피스</span><span class="mli-arr">→</span></div>
+            </div>
+            <div class="modal-list-item" onclick="showDetail('sindorim')">
+              <div class="mli-left"><div class="mli-num">07</div><div><div class="mli-name">신도림디큐브시티</div><div class="mli-sub">이지스랜드플랫폼1-1호 · 투자원금 13.4억원</div></div></div>
+              <div class="mli-right"><span class="mli-tag">오피스</span><span class="mli-arr">→</span></div>
+            </div>
+            <div class="modal-list-item" onclick="showDetail('seoulsup')">
+              <div class="mli-left"><div class="mli-num">08</div><div><div class="mli-name">서울숲더샵</div><div class="mli-sub">GRE10호 · 투자원금 1.5억원</div></div></div>
+              <div class="mli-right"><span class="mli-tag">오피스</span><span class="mli-arr">→</span></div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- DETAIL VIEW: Glasstower -->
-      <div id="detail-glasstower" style="display:none">
-        <div class="modal-header">
-          <button class="modal-close" onclick="closeModal()">✕</button>
-          <button class="modal-back" onclick="showList('office')">← 목록으로</button>
-          <div class="modal-asset-type">Office · 오피스</div>
-          <div class="modal-title">Glasstower</div>
-          <div class="modal-subtitle">서울특별시 강남구 테헤란로 534 · GFC</div>
-          <div class="modal-meta-row">
-            <div class="modal-meta-item"><span class="modal-meta-label">유형</span><span class="modal-meta-val">프라임 오피스</span></div>
-            <div class="modal-meta-item"><span class="modal-meta-label">위치</span><span class="modal-meta-val">서울 강남 GFC</span></div>
-            <div class="modal-meta-item"><span class="modal-meta-label">펀드</span><span class="modal-meta-val">Pacific Fund 40·59호</span></div>
-            <div class="modal-meta-item"><span class="modal-meta-label">참여 역할</span><span class="modal-meta-val">펀드 만기 대응 · 투자심의</span></div>
-          </div>
-        </div>
-        <div class="modal-body">
-          <div class="modal-section-title">자산 개요</div>
-          <p class="modal-desc">Glasstower는 서울 강남 GFC(Global Finance Center) 내 위치한 프라임 오피스 자산으로, Pacific Fund 40·59호를 통해 보유 중인 핵심 오피스 자산입니다. 펀드 만기 도래 시점에서의 엑싯 전략 수립 및 투자심의위원회 대응 업무를 담당하였습니다.</p>
-          <div class="modal-section-title">주요 수행 업무</div>
-          <div class="modal-roles">
-            <div class="modal-role-item"><span class="modal-role-num">01 — 만기 대응 전략</span><div class="modal-role-desc">펀드 만기 시나리오별 매각·리파이낸싱 수익률 분석. 시장 Cap Rate 동향 반영한 자산 가치 재산정.</div></div>
-            <div class="modal-role-item"><span class="modal-role-num">02 — 투자심의자료</span><div class="modal-role-desc">투자심의위원회 보고용 장표 작성. 매각 타임라인, 예상 IRR·MOIC, 리스크 요인 정리.</div></div>
-            <div class="modal-role-item"><span class="modal-role-num">03 — 금리·시장 분석</span><div class="modal-role-desc">서울 프라임 오피스 Cap Rate vs. 국채 스프레드 분석. CD·CP 금리 동향 및 벤치마크 금리 스텝 차트 작성.</div></div>
-            <div class="modal-role-item"><span class="modal-role-num">04 — REF 구조 검토</span><div class="modal-role-desc">SPC 활용 자산 보유 구조 검토. 배당 재원 및 차환 조건 분석, 금융기관 협의 지원.</div></div>
-          </div>
-          <div class="modal-section-title">관련 역량</div>
-          <div class="modal-tags">
-            <span class="modal-tag">Cap Rate 분석</span><span class="modal-tag">IRR · MOIC</span>
-            <span class="modal-tag">REF 구조</span><span class="modal-tag">펀드 만기 대응</span>
-            <span class="modal-tag">투자심의자료</span><span class="modal-tag">매각·리파이낸싱</span>
-            <span class="modal-tag">금리 시장 분석</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- DETAIL VIEW: Linsquare -->
+      <!-- 린스퀘어 -->
       <div id="detail-linsquare" style="display:none">
         <div class="modal-header">
           <button class="modal-close" onclick="closeModal()">✕</button>
           <button class="modal-back" onclick="showList('office')">← 목록으로</button>
           <div class="modal-asset-type">Office · 오피스</div>
-          <div class="modal-title">Linsquare</div>
-          <div class="modal-subtitle">서울특별시 강서구 마곡동 · 마곡 업무지구</div>
+          <div class="modal-title">린스퀘어</div>
+          <div class="modal-subtitle">퍼시픽39호 · 서울 강서구 마곡동</div>
           <div class="modal-meta-row">
-            <div class="modal-meta-item"><span class="modal-meta-label">유형</span><span class="modal-meta-val">프라임 오피스</span></div>
-            <div class="modal-meta-item"><span class="modal-meta-label">위치</span><span class="modal-meta-val">서울 마곡</span></div>
-            <div class="modal-meta-item"><span class="modal-meta-label">구조</span><span class="modal-meta-val">REF 구조</span></div>
-            <div class="modal-meta-item"><span class="modal-meta-label">참여 역할</span><span class="modal-meta-val">딜 검토 · 투자심의</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">펀드명</span><span class="modal-meta-val">퍼시픽39호</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자원금</span><span class="modal-meta-val">30.0억원</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자구분</span><span class="modal-meta-val">수익증권</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">자산유형</span><span class="modal-meta-val">프라임 오피스</span></div>
           </div>
         </div>
         <div class="modal-body">
           <div class="modal-section-title">자산 개요</div>
-          <p class="modal-desc">Linsquare는 서울 마곡 업무지구 내 위치한 프라임 오피스 자산입니다. REF 구조 기반의 딜 검토 및 투자심의 자료 작성에 참여하였으며, 마곡 오피스 시장의 수급 동향 및 임차인 구성 분석을 수행하였습니다.</p>
+          <p class="modal-desc">린스퀘어는 서울 마곡 업무지구 내 위치한 프라임 오피스 자산으로, 퍼시픽39호 수익증권을 통해 투자하고 있습니다. 딜 검토, 투자심의 자료 작성 및 운용 모니터링에 참여하고 있습니다.</p>
           <div class="modal-section-title">주요 수행 업무</div>
           <div class="modal-roles">
-            <div class="modal-role-item"><span class="modal-role-num">01 — 딜 검토</span><div class="modal-role-desc">투자 타당성 검토 및 초기 밸류에이션. NOI 산정, Cap Rate 적용 자산가치 분석.</div></div>
-            <div class="modal-role-item"><span class="modal-role-num">02 — 시장 분석</span><div class="modal-role-desc">마곡 오피스 공실률·임대료 동향 분석. 주요 임차인 현황 및 만기 리스크 검토.</div></div>
-            <div class="modal-role-item"><span class="modal-role-num">03 — 투자심의자료</span><div class="modal-role-desc">투자심의위원회 보고용 장표 작성. IRR 시나리오 및 Exit 전략 정리.</div></div>
-            <div class="modal-role-item"><span class="modal-role-num">04 — REF 구조</span><div class="modal-role-desc">REF 펀드 구조 설계 검토. SPC 활용 자산 보유 방식 및 배당 구조 분석.</div></div>
+            <div class="modal-role-item"><span class="modal-role-num">01 — 딜 검토</span><div class="modal-role-desc">NOI 산정 및 Cap Rate 적용 자산가치 분석. 투자 타당성 검토.</div></div>
+            <div class="modal-role-item"><span class="modal-role-num">02 — 투자심의자료</span><div class="modal-role-desc">투자심의위원회 보고용 장표 작성. IRR 시나리오 및 Exit 전략.</div></div>
+            <div class="modal-role-item"><span class="modal-role-num">03 — 시장 분석</span><div class="modal-role-desc">마곡 오피스 공실률·임대료 동향 분석. 주요 임차인 현황 검토.</div></div>
+            <div class="modal-role-item"><span class="modal-role-num">04 — 운용 모니터링</span><div class="modal-role-desc">수익증권 보유 현황 모니터링 및 배당 수익 관리.</div></div>
           </div>
           <div class="modal-section-title">관련 역량</div>
-          <div class="modal-tags">
-            <span class="modal-tag">딜 검토</span><span class="modal-tag">NOI 산정</span>
-            <span class="modal-tag">Cap Rate</span><span class="modal-tag">REF 구조</span>
-            <span class="modal-tag">시장 분석</span><span class="modal-tag">투자심의자료</span>
-            <span class="modal-tag">IRR 시나리오</span>
-          </div>
+          <div class="modal-tags"><span class="modal-tag">Cap Rate</span><span class="modal-tag">IRR</span><span class="modal-tag">투자심의자료</span><span class="modal-tag">시장 분석</span><span class="modal-tag">REF 구조</span></div>
         </div>
       </div>
 
+      <!-- 글라스타워 40호 -->
+      <div id="detail-glasstower40" style="display:none">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal()">✕</button>
+          <button class="modal-back" onclick="showList('office')">← 목록으로</button>
+          <div class="modal-asset-type">Office · 오피스</div>
+          <div class="modal-title">글라스타워</div>
+          <div class="modal-subtitle">퍼시픽40호 · 서울 강남구 테헤란로 GFC</div>
+          <div class="modal-meta-row">
+            <div class="modal-meta-item"><span class="modal-meta-label">펀드명</span><span class="modal-meta-val">퍼시픽40호</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자원금</span><span class="modal-meta-val">35.1억원</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자구분</span><span class="modal-meta-val">수익증권</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">자산유형</span><span class="modal-meta-val">프라임 오피스</span></div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section-title">자산 개요</div>
+          <p class="modal-desc">글라스타워는 서울 강남 GFC(Global Finance Center) 내 위치한 프라임 오피스 자산으로, 퍼시픽40호를 통해 보유 중입니다. 펀드 만기 도래 시점의 엑싯 전략 수립 및 투자심의위원회 대응 업무를 담당하였습니다.</p>
+          <div class="modal-section-title">주요 수행 업무</div>
+          <div class="modal-roles">
+            <div class="modal-role-item"><span class="modal-role-num">01 — 만기 대응 전략</span><div class="modal-role-desc">매각·리파이낸싱 시나리오별 수익률 분석. Cap Rate 동향 반영 자산가치 재산정.</div></div>
+            <div class="modal-role-item"><span class="modal-role-num">02 — 투자심의자료</span><div class="modal-role-desc">투자심의위원회 보고용 장표 작성. IRR·MOIC 및 리스크 요인 정리.</div></div>
+            <div class="modal-role-item"><span class="modal-role-num">03 — 금리·시장 분석</span><div class="modal-role-desc">Cap Rate vs. 국채 스프레드 분석. CD·CP 금리 동향 및 스텝 차트 작성.</div></div>
+            <div class="modal-role-item"><span class="modal-role-num">04 — REF 구조 검토</span><div class="modal-role-desc">SPC 활용 자산 보유 구조 검토. 배당 재원 및 차환 조건 분석.</div></div>
+          </div>
+          <div class="modal-section-title">관련 역량</div>
+          <div class="modal-tags"><span class="modal-tag">Cap Rate</span><span class="modal-tag">IRR · MOIC</span><span class="modal-tag">REF 구조</span><span class="modal-tag">펀드 만기 대응</span><span class="modal-tag">투자심의자료</span><span class="modal-tag">금리 분석</span></div>
+        </div>
+      </div>
+
+      <!-- 글라스타워 59호 -->
+      <div id="detail-glasstower59" style="display:none">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal()">✕</button>
+          <button class="modal-back" onclick="showList('office')">← 목록으로</button>
+          <div class="modal-asset-type">Office · 오피스</div>
+          <div class="modal-title">글라스타워</div>
+          <div class="modal-subtitle">퍼시픽59호 · 서울 강남구 테헤란로 GFC</div>
+          <div class="modal-meta-row">
+            <div class="modal-meta-item"><span class="modal-meta-label">펀드명</span><span class="modal-meta-val">퍼시픽59호</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자원금</span><span class="modal-meta-val">8.3억원</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자구분</span><span class="modal-meta-val">수익증권</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">자산유형</span><span class="modal-meta-val">프라임 오피스</span></div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section-title">자산 개요</div>
+          <p class="modal-desc">글라스타워 퍼시픽59호는 동일 자산(GFC 글라스타워)에 대한 추가 투자 펀드입니다. 기존 40호와 함께 통합 관점에서 자산 운용 전략을 수립하고 있습니다.</p>
+          <div class="modal-section-title">주요 수행 업무</div>
+          <div class="modal-roles">
+            <div class="modal-role-item"><span class="modal-role-num">01 — 통합 운용 전략</span><div class="modal-role-desc">퍼시픽40·59호 통합 포지션 관리. 전체 투자 규모 기반 Exit 시나리오 수립.</div></div>
+            <div class="modal-role-item"><span class="modal-role-num">02 — 투자심의자료</span><div class="modal-role-desc">펀드별 수익률 분리 분석 및 통합 IRR 산정.</div></div>
+          </div>
+          <div class="modal-section-title">관련 역량</div>
+          <div class="modal-tags"><span class="modal-tag">IRR</span><span class="modal-tag">통합 포지션 관리</span><span class="modal-tag">투자심의자료</span><span class="modal-tag">REF 구조</span></div>
+        </div>
+      </div>
+
+      <!-- 분당롯데 -->
+      <div id="detail-bundang" style="display:none">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal()">✕</button>
+          <button class="modal-back" onclick="showList('office')">← 목록으로</button>
+          <div class="modal-asset-type">Office · 오피스</div>
+          <div class="modal-title">분당롯데</div>
+          <div class="modal-subtitle">이지스389호 · 경기 성남시 분당구</div>
+          <div class="modal-meta-row">
+            <div class="modal-meta-item"><span class="modal-meta-label">펀드명</span><span class="modal-meta-val">이지스389호</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자원금</span><span class="modal-meta-val">45.0억원</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자구분</span><span class="modal-meta-val">수익증권</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">자산유형</span><span class="modal-meta-val">오피스</span></div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section-title">자산 개요</div>
+          <p class="modal-desc">분당롯데는 경기 성남시 분당구에 위치한 오피스 자산으로, 이지스389호 수익증권을 통해 투자하고 있습니다. 포트폴리오 내 가장 큰 투자원금 규모의 오피스 자산입니다.</p>
+          <div class="modal-section-title">주요 수행 업무</div>
+          <div class="modal-roles">
+            <div class="modal-role-item"><span class="modal-role-num">01 — 운용 모니터링</span><div class="modal-role-desc">수익증권 보유 현황 및 배당 수익 모니터링.</div></div>
+            <div class="modal-role-item"><span class="modal-role-num">02 — 시장 분석</span><div class="modal-role-desc">분당 오피스 시장 임대 동향 및 공실 리스크 분석.</div></div>
+          </div>
+          <div class="modal-section-title">관련 역량</div>
+          <div class="modal-tags"><span class="modal-tag">운용 모니터링</span><span class="modal-tag">시장 분석</span><span class="modal-tag">수익증권</span><span class="modal-tag">배당 수익</span></div>
+        </div>
+      </div>
+
+      <!-- 수서역세권 -->
+      <div id="detail-suseo" style="display:none">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal()">✕</button>
+          <button class="modal-back" onclick="showList('office')">← 목록으로</button>
+          <div class="modal-asset-type">Office · PF 재구조화</div>
+          <div class="modal-title">수서역세권</div>
+          <div class="modal-subtitle">이지스PF재구조화1-2호 · 서울 강남구 수서</div>
+          <div class="modal-meta-row">
+            <div class="modal-meta-item"><span class="modal-meta-label">펀드명</span><span class="modal-meta-val">이지스PF재구조화1-2호</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자원금</span><span class="modal-meta-val">562만원</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자구분</span><span class="modal-meta-val">수익증권</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">유형</span><span class="modal-meta-val">PF 재구조화</span></div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section-title">자산 개요</div>
+          <p class="modal-desc">수서역세권 개발 PF 재구조화 딜로, 이지스PF재구조화1-2호를 통해 소규모 포지션을 보유하고 있습니다. PF 재구조화 구조 이해 및 리스크 분석 경험을 쌓은 자산입니다.</p>
+          <div class="modal-section-title">관련 역량</div>
+          <div class="modal-tags"><span class="modal-tag">PF 재구조화</span><span class="modal-tag">리스크 분석</span><span class="modal-tag">수익증권</span></div>
+        </div>
+      </div>
+
+      <!-- 용산나진상가 -->
+      <div id="detail-yongsan" style="display:none">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal()">✕</button>
+          <button class="modal-back" onclick="showList('office')">← 목록으로</button>
+          <div class="modal-asset-type">Office · PF 재구조화</div>
+          <div class="modal-title">용산나진상가</div>
+          <div class="modal-subtitle">이지스PF재구조화1-3호 · 서울 용산구</div>
+          <div class="modal-meta-row">
+            <div class="modal-meta-item"><span class="modal-meta-label">펀드명</span><span class="modal-meta-val">이지스PF재구조화1-3호</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자원금</span><span class="modal-meta-val">2.5억원</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자구분</span><span class="modal-meta-val">수익증권</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">유형</span><span class="modal-meta-val">PF 재구조화</span></div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section-title">자산 개요</div>
+          <p class="modal-desc">용산나진상가 재개발 PF 재구조화 딜로, 이지스PF재구조화1-3호를 통해 투자하고 있습니다. 용산 지역 개발 사업의 리스크-리턴 구조 분석 경험을 보유하고 있습니다.</p>
+          <div class="modal-section-title">관련 역량</div>
+          <div class="modal-tags"><span class="modal-tag">PF 재구조화</span><span class="modal-tag">개발 리스크 분석</span><span class="modal-tag">수익증권</span></div>
+        </div>
+      </div>
+
+      <!-- 신도림디큐브시티 -->
+      <div id="detail-sindorim" style="display:none">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal()">✕</button>
+          <button class="modal-back" onclick="showList('office')">← 목록으로</button>
+          <div class="modal-asset-type">Office · 오피스</div>
+          <div class="modal-title">신도림 디큐브시티</div>
+          <div class="modal-subtitle">이지스랜드플랫폼1-1호 · 서울 구로구 신도림</div>
+          <div class="modal-meta-row">
+            <div class="modal-meta-item"><span class="modal-meta-label">펀드명</span><span class="modal-meta-val">이지스랜드플랫폼1-1호</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자원금</span><span class="modal-meta-val">13.4억원</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자구분</span><span class="modal-meta-val">수익증권</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">자산유형</span><span class="modal-meta-val">오피스·복합시설</span></div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section-title">자산 개요</div>
+          <p class="modal-desc">신도림 디큐브시티는 서울 구로구 신도림에 위치한 복합 오피스 자산으로, 이지스랜드플랫폼1-1호를 통해 투자하고 있습니다. 상업·오피스 복합 구조의 운용 전략을 분석한 경험이 있습니다.</p>
+          <div class="modal-section-title">관련 역량</div>
+          <div class="modal-tags"><span class="modal-tag">복합시설 분석</span><span class="modal-tag">운용 모니터링</span><span class="modal-tag">수익증권</span></div>
+        </div>
+      </div>
+
+      <!-- 서울숲더샵 -->
+      <div id="detail-seoulsup" style="display:none">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal()">✕</button>
+          <button class="modal-back" onclick="showList('office')">← 목록으로</button>
+          <div class="modal-asset-type">Office · 오피스</div>
+          <div class="modal-title">서울숲더샵</div>
+          <div class="modal-subtitle">GRE10호 · 서울 성동구 성수동</div>
+          <div class="modal-meta-row">
+            <div class="modal-meta-item"><span class="modal-meta-label">펀드명</span><span class="modal-meta-val">GRE10호</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자원금</span><span class="modal-meta-val">1.5억원</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자구분</span><span class="modal-meta-val">수익증권</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">자산유형</span><span class="modal-meta-val">오피스</span></div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section-title">자산 개요</div>
+          <p class="modal-desc">서울숲더샵은 성수동 서울숲 인근에 위치한 오피스 자산으로, GRE10호를 통해 소규모 포지션을 보유하고 있습니다.</p>
+          <div class="modal-section-title">관련 역량</div>
+          <div class="modal-tags"><span class="modal-tag">운용 모니터링</span><span class="modal-tag">수익증권</span><span class="modal-tag">성수 오피스 시장</span></div>
+        </div>
+      </div>
     </div><!-- end modal-office -->
+
+    <!-- ══ LOGISTICS MODAL ══ -->
+    <div id="modal-logistics" style="display:none">
+      <div id="logistics-list" style="display:none">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal()">✕</button>
+          <div class="modal-asset-type">Logistics · 물류</div>
+          <div class="modal-title">물류 포트폴리오</div>
+          <div class="modal-subtitle">총 2건 · 투자원금 합계 약 8.8억원</div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section-title">보유 자산</div>
+          <div class="modal-list">
+            <div class="modal-list-item" onclick="showDetail('yongin')">
+              <div class="mli-left"><div class="mli-num">01</div><div><div class="mli-name">용인국제2차</div><div class="mli-sub">용인국제2차 · 투자원금 5.0억원</div></div></div>
+              <div class="mli-right"><span class="mli-tag">물류센터</span><span class="mli-arr">→</span></div>
+            </div>
+            <div class="modal-list-item" onclick="showDetail('anseong')">
+              <div class="mli-left"><div class="mli-num">02</div><div><div class="mli-name">안성산하</div><div class="mli-sub">이지스PF재구조화1-4호 · 투자원금 3.8억원</div></div></div>
+              <div class="mli-right"><span class="mli-tag">물류센터</span><span class="mli-arr">→</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="detail-yongin" style="display:none">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal()">✕</button>
+          <button class="modal-back" onclick="showList('logistics')">← 목록으로</button>
+          <div class="modal-asset-type">Logistics · 물류</div>
+          <div class="modal-title">용인국제2차</div>
+          <div class="modal-subtitle">용인국제2차 · 경기도 용인시</div>
+          <div class="modal-meta-row">
+            <div class="modal-meta-item"><span class="modal-meta-label">펀드명</span><span class="modal-meta-val">용인국제2차</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자원금</span><span class="modal-meta-val">5.0억원</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">위치</span><span class="modal-meta-val">경기도 용인시</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">자산유형</span><span class="modal-meta-val">물류센터</span></div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section-title">자산 개요</div>
+          <p class="modal-desc">용인 소재 물류센터로, 지구단위계획 IM 분석 및 투자 검토에 참여하였습니다. 산업단지 용도 분류 및 KEPCO 보증계약 구조 이해를 포함한 물류 자산 실무 경험을 쌓은 자산입니다.</p>
+          <div class="modal-section-title">주요 수행 업무</div>
+          <div class="modal-roles">
+            <div class="modal-role-item"><span class="modal-role-num">01 — IM 분석</span><div class="modal-role-desc">지구단위계획 IM 검토. 산업유통형 용도 분류 및 인허가 리스크 분석.</div></div>
+            <div class="modal-role-item"><span class="modal-role-num">02 — 구조 검토</span><div class="modal-role-desc">KEPCO 보증계약 구조 이해. 장기 임차 안정성 및 공실 리스크 검토.</div></div>
+          </div>
+          <div class="modal-section-title">관련 역량</div>
+          <div class="modal-tags"><span class="modal-tag">지구단위계획</span><span class="modal-tag">IM 분석</span><span class="modal-tag">KEPCO 구조</span><span class="modal-tag">물류 시장 분석</span></div>
+        </div>
+      </div>
+      <div id="detail-anseong" style="display:none">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal()">✕</button>
+          <button class="modal-back" onclick="showList('logistics')">← 목록으로</button>
+          <div class="modal-asset-type">Logistics · PF 재구조화</div>
+          <div class="modal-title">안성산하</div>
+          <div class="modal-subtitle">이지스PF재구조화1-4호 · 경기도 안성시</div>
+          <div class="modal-meta-row">
+            <div class="modal-meta-item"><span class="modal-meta-label">펀드명</span><span class="modal-meta-val">이지스PF재구조화1-4호</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자원금</span><span class="modal-meta-val">3.8억원</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">위치</span><span class="modal-meta-val">경기도 안성시</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">유형</span><span class="modal-meta-val">물류 PF 재구조화</span></div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section-title">자산 개요</div>
+          <p class="modal-desc">안성 소재 물류센터 PF 재구조화 딜로, 이지스PF재구조화1-4호를 통해 투자하고 있습니다. 물류 자산의 PF 재구조화 구조 및 리스크 분석 경험을 보유하고 있습니다.</p>
+          <div class="modal-section-title">관련 역량</div>
+          <div class="modal-tags"><span class="modal-tag">PF 재구조화</span><span class="modal-tag">물류 리스크 분석</span><span class="modal-tag">수익증권</span></div>
+        </div>
+      </div>
+    </div><!-- end modal-logistics -->
+
+    <!-- ══ IDC MODAL ══ -->
+    <div id="modal-idc" style="display:none">
+      <div id="idc-list" style="display:none">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal()">✕</button>
+          <div class="modal-asset-type">IDC · 데이터센터</div>
+          <div class="modal-title">IDC 포트폴리오</div>
+          <div class="modal-subtitle">총 1건 · 투자원금 합계 약 1.7억원</div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section-title">보유 자산</div>
+          <div class="modal-list">
+            <div class="modal-list-item" onclick="showDetail('munbong')">
+              <div class="mli-left"><div class="mli-num">01</div><div><div class="mli-name">문봉동 IDC</div><div class="mli-sub">이지스랜드플랫폼1-2호 · 투자원금 1.7억원</div></div></div>
+              <div class="mli-right"><span class="mli-tag">데이터센터</span><span class="mli-arr">→</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="detail-munbong" style="display:none">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal()">✕</button>
+          <button class="modal-back" onclick="showList('idc')">← 목록으로</button>
+          <div class="modal-asset-type">IDC · 데이터센터</div>
+          <div class="modal-title">문봉동 IDC</div>
+          <div class="modal-subtitle">이지스랜드플랫폼1-2호 · 인천 서구 문봉동</div>
+          <div class="modal-meta-row">
+            <div class="modal-meta-item"><span class="modal-meta-label">펀드명</span><span class="modal-meta-val">이지스랜드플랫폼1-2호</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자원금</span><span class="modal-meta-val">1.7억원</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">위치</span><span class="modal-meta-val">인천 서구 문봉동</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">자산유형</span><span class="modal-meta-val">데이터센터</span></div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section-title">자산 개요</div>
+          <p class="modal-desc">인천 문봉동 소재 데이터센터(IDC) 자산으로, 이지스랜드플랫폼1-2호를 통해 투자하고 있습니다. 전력 인프라 분석, 장기 임차 구조, AI·클라우드 수요 기반 IDC 시장 동향 파악 경험을 보유하고 있습니다.</p>
+          <div class="modal-section-title">주요 수행 업무</div>
+          <div class="modal-roles">
+            <div class="modal-role-item"><span class="modal-role-num">01 — 딜 검토</span><div class="modal-role-desc">IDC 투자 구조 및 전력 인프라 분석. 장기 임차 안정성 검토.</div></div>
+            <div class="modal-role-item"><span class="modal-role-num">02 — 시장 분석</span><div class="modal-role-desc">AI·클라우드 수요 기반 IDC 시장 수급 동향 분석. REF 구조 딜 검토.</div></div>
+          </div>
+          <div class="modal-section-title">관련 역량</div>
+          <div class="modal-tags"><span class="modal-tag">IDC 투자 구조</span><span class="modal-tag">전력 인프라</span><span class="modal-tag">장기 임차</span><span class="modal-tag">REF 구조</span><span class="modal-tag">시장 분석</span></div>
+        </div>
+      </div>
+    </div><!-- end modal-idc -->
+
+    <!-- ══ 기타 MODAL ══ -->
+    <div id="modal-etc" style="display:none">
+      <div id="etc-list" style="display:none">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal()">✕</button>
+          <div class="modal-asset-type">기타 · 해외·개발</div>
+          <div class="modal-title">기타 포트폴리오</div>
+          <div class="modal-subtitle">총 1건 · 투자원금 합계 약 2.2억원</div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section-title">보유 자산</div>
+          <div class="modal-list">
+            <div class="modal-list-item" onclick="showDetail('newyork')">
+              <div class="mli-left"><div class="mli-num">01</div><div><div class="mli-name">뉴욕 트라이베카 콘도</div><div class="mli-sub">대신뉴욕하임 REF · 투자원금 2.2억원</div></div></div>
+              <div class="mli-right"><span class="mli-tag">해외 개발</span><span class="mli-arr">→</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="detail-newyork" style="display:none">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal()">✕</button>
+          <button class="modal-back" onclick="showList('etc')">← 목록으로</button>
+          <div class="modal-asset-type">기타 · 해외 개발</div>
+          <div class="modal-title">뉴욕 트라이베카 콘도</div>
+          <div class="modal-subtitle">대신뉴욕하임 REF · 미국 뉴욕 트라이베카</div>
+          <div class="modal-meta-row">
+            <div class="modal-meta-item"><span class="modal-meta-label">펀드명</span><span class="modal-meta-val">대신뉴욕하임 REF</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">투자원금</span><span class="modal-meta-val">2.2억원</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">위치</span><span class="modal-meta-val">미국 뉴욕 트라이베카</span></div>
+            <div class="modal-meta-item"><span class="modal-meta-label">자산유형</span><span class="modal-meta-val">해외 콘도 개발</span></div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-section-title">자산 개요</div>
+          <p class="modal-desc">미국 뉴욕 트라이베카 지역 콘도 개발 사업으로, 대신뉴욕하임 REF를 통해 투자하고 있습니다. 해외 부동산 개발 사업의 투자 구조 및 환율·현지 시장 리스크 분석 경험을 보유하고 있습니다.</p>
+          <div class="modal-section-title">주요 수행 업무</div>
+          <div class="modal-roles">
+            <div class="modal-role-item"><span class="modal-role-num">01 — 해외 투자 구조</span><div class="modal-role-desc">해외 콘도 개발 REF 구조 검토. 현지 시행사 및 사업 구조 분석.</div></div>
+            <div class="modal-role-item"><span class="modal-role-num">02 — 리스크 분석</span><div class="modal-role-desc">환율 리스크, 현지 분양 리스크, 완공 리스크 분석.</div></div>
+          </div>
+          <div class="modal-section-title">관련 역량</div>
+          <div class="modal-tags"><span class="modal-tag">해외 투자</span><span class="modal-tag">개발 사업</span><span class="modal-tag">REF 구조</span><span class="modal-tag">환율 리스크</span><span class="modal-tag">분양 리스크</span></div>
+        </div>
+      </div>
+    </div><!-- end modal-etc -->
+
   </div><!-- end modal-box -->
 </div><!-- end modal-overlay -->
 
@@ -766,42 +1134,117 @@
 <script>
 /* ── Modal ── */
 function openModal(type){
-  // 모든 모달 숨기기
-  document.querySelectorAll('#modal-box > div').forEach(el=>{ el.style.display='none'; });
-  // 해당 모달 보이기
+  const overlay = document.getElementById('modal-overlay');
+  // 모든 모달 div 숨기기
+  ['office','logistics','idc','etc'].forEach(t => {
+    const m = document.getElementById('modal-'+t);
+    if(m) m.style.display = 'none';
+  });
+  // 해당 모달 표시
   const modal = document.getElementById('modal-'+type);
-  if(modal){
-    modal.style.display = 'block';
-    // 내부 detail 숨기고 list만 보이기
-    modal.querySelectorAll('[id^="detail-"]').forEach(el=>{ el.style.display='none'; });
-    const list = document.getElementById(type+'-list');
-    if(list) list.style.display = 'block';
-  }
-  document.getElementById('modal-overlay').classList.add('open');
+  if(!modal) return;
+  modal.style.display = 'block';
+  // list 보이기, detail 숨기기
+  const list = document.getElementById(type+'-list');
+  if(list) list.style.display = 'block';
+  modal.querySelectorAll('div[id^="detail-"]').forEach(el => el.style.display = 'none');
+  // overlay 열기
+  overlay.style.opacity = '0';
+  overlay.style.pointerEvents = 'all';
+  overlay.style.display = 'flex';
+  setTimeout(() => { overlay.style.opacity = '1'; }, 10);
   document.getElementById('modal-box').scrollTop = 0;
   document.body.style.overflow = 'hidden';
 }
 function showDetail(id){
-  // 현재 모달 내 모든 뷰 숨기기
-  document.querySelectorAll('[id^="detail-"],[id$="-list"]').forEach(el=>{ el.style.display='none'; });
+  // 모든 list/detail 숨기기
+  document.querySelectorAll('[id$="-list"],[id^="detail-"]').forEach(el => el.style.display = 'none');
   const el = document.getElementById('detail-'+id);
-  if(el){ el.style.display='block'; document.getElementById('modal-box').scrollTop=0; }
+  if(el){ el.style.display = 'block'; document.getElementById('modal-box').scrollTop = 0; }
 }
 function showList(type){
-  document.querySelectorAll('[id^="detail-"],[id$="-list"]').forEach(el=>{ el.style.display='none'; });
+  document.querySelectorAll('[id$="-list"],[id^="detail-"]').forEach(el => el.style.display = 'none');
   const el = document.getElementById(type+'-list');
-  if(el){ el.style.display='block'; document.getElementById('modal-box').scrollTop=0; }
+  if(el){ el.style.display = 'block'; document.getElementById('modal-box').scrollTop = 0; }
 }
 function closeModal(){
-  document.getElementById('modal-overlay').classList.remove('open');
-  document.body.style.overflow='';
+  const overlay = document.getElementById('modal-overlay');
+  overlay.style.opacity = '0';
+  setTimeout(() => { overlay.style.display = 'none'; overlay.style.pointerEvents = 'none'; }, 400);
+  document.body.style.overflow = '';
 }
 function closeModalOutside(e){
-  if(e.target===document.getElementById('modal-overlay')) closeModal();
+  if(e.target === document.getElementById('modal-overlay')) closeModal();
 }
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
 
-/* ── Cursor ── */
+/* ── Live Ticker ── */
+(async function loadTicker(){
+  const ECOS_KEY = 'ES1U26AA69MBKC6D7YWL';
+
+  // 고정 데이터 (수동 업데이트)
+  const staticItems = [
+    { label:'서울 오피스 Cap Rate', val:'4.2%' },
+    { label:'수도권 물류 공실률',   val:'< 3%' },
+    { label:'호텔 ADR',            val:'▲ YoY 회복세' },
+  ];
+
+  // ECOS API 호출 헬퍼
+  async function fetchECOS(statCode, itemCode){
+    const today = new Date();
+    const ym = today.getFullYear() + String(today.getMonth()+1).padStart(2,'0');
+    const prevYm = (() => {
+      const d = new Date(today.getFullYear(), today.getMonth()-3, 1);
+      return d.getFullYear() + String(d.getMonth()+1).padStart(2,'0');
+    })();
+    const url = `https://ecos.bok.or.kr/api/StatisticSearch/${ECOS_KEY}/json/kr/1/5/${statCode}/MM/${prevYm}/${ym}/${itemCode}`;
+    try {
+      const res = await fetch(url);
+      const json = await res.json();
+      const rows = json?.StatisticSearch?.row;
+      if(rows && rows.length > 0){
+        const last = rows[rows.length-1];
+        return parseFloat(last.DATA_VALUE);
+      }
+    } catch(e){ console.warn('ECOS fetch error:', e); }
+    return null;
+  }
+
+  // 환율 API (무료, 키 불필요)
+  async function fetchUSDKRW(){
+    try {
+      const res = await fetch('https://open.er-api.com/v6/latest/USD');
+      const json = await res.json();
+      const rate = json?.rates?.KRW;
+      if(rate) return Math.round(rate).toLocaleString();
+    } catch(e){ console.warn('환율 fetch error:', e); }
+    return null;
+  }
+
+  // 데이터 병렬 호출
+  const [baseRate, cdRate, usdKrw] = await Promise.all([
+    fetchECOS('722Y001', '0101000'),   // 한국은행 기준금리
+    fetchECOS('817Y002', '010290000'), // CD 91일물
+    fetchUSDKRW(),
+  ]);
+
+  // 동적 항목 조합
+  const liveItems = [
+    ...staticItems,
+    { label:'한국 기준금리', val: baseRate ? baseRate.toFixed(2)+'%' : '3.50%' },
+    { label:'CD 91일물',     val: cdRate   ? cdRate.toFixed(2)+'%'   : '3.71%' },
+    { label:'KRW/USD',       val: usdKrw   ? usdKrw+'원'             : '~1,380원' },
+  ];
+
+  // ticker HTML 생성 (seamless loop 위해 2배 복제)
+  const allItems = [...liveItems, ...liveItems];
+  const html = allItems.map(item =>
+    `<div class="ticker-item">${item.label} <span class="ticker-val">${item.val}</span></div>`
+  ).join('');
+
+  const track = document.getElementById('ticker-track');
+  if(track) track.innerHTML = html;
+})();
 const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
